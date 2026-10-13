@@ -139,3 +139,33 @@ Stage Summary:
 - Scroll 2 live below Scroll 1 as one continuous page; all section-8-permitted edits only.
 - Artifacts: analysis/{shot-s2,diff-s2,side-s2,overlay-s2,seam-*,final_triptych_s2}.png,
   responsive-s2/w*.png; scripts/{verify-s2.ts,seam-s2.ts,e2e-s2.mjs,responsive-s2.mjs}.
+
+---
+Task ID: 1
+Agent: main (Z.ai Code)
+Task: Shrink the Scroll 1 → Scroll 2 junction gap (user report: too large on mobile)
+
+Work Log:
+- Diagnosed: Scroll1 carried min-h-[100svh]; its content (750 design px) scales with
+  viewport WIDTH but 100svh tracks HEIGHT — real phones (aspect ~2.16) stretch the
+  section past its content → ~194px dead zone + 62px pb + Scroll2's 41px title offset
+  ≈ 230px perceived gap on 390x844 (design frame 450x875 only showed 166px).
+- Fix (Scroll1.tsx ONLY): removed min-h-[100svh]; pb 4.5rem → 3.5rem (safe-area kept).
+  Junction is now a fixed proportional rhythm on every device.
+- scripts/e2e-s2.mjs: (a) below-fold reveal assertion re-targeted from .s2-reveal[0]
+  (section title — now legitimately peeks into viewport 1) to [1] (first step illu,
+  page-y ≈ 897 > 875); (b) header auto-hide test switched from absolute scrollTo(1000/
+  1100) — which clamped to max-scroll after the page shortened, firing no events — to
+  relative scrollBy deltas. Header/Scroll2 components untouched.
+- Verified: lint clean; e2e-s2 16/16; e2e (Scroll1+subpages) ALL PASS; responsive-s2
+  OK (360-1440, 0 overflow); agent-browser measurements 390x844 gap card→S2 = 49px,
+  card→title = 84px (was ~194/~230), 1440x900 = 60/103px; screenshots junction-mobile-
+  390 / top-mobile-390 / junction-desktop-1440 confirm first screen pixel-identical,
+  seam + decor + reveals intact; zero console errors; dev.log clean.
+- Git: silenced mode-bit-only churn (git config core.fileMode false — sandbox chmod
+  noise, no content change); committed ONLY Scroll1.tsx + e2e-s2.mjs as ce5606a and
+  pushed to github.com/amirhs838/front-bimeh main.
+
+Stage Summary:
+- Junction gap on mobile reduced ~63% (230→84px to heading); identical first-screen
+  content; all suites green; fix live on remote (ce5606a).
