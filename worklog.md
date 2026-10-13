@@ -169,3 +169,32 @@ Work Log:
 Stage Summary:
 - Junction gap on mobile reduced ~63% (230→84px to heading); identical first-screen
   content; all suites green; fix live on remote (ce5606a).
+
+---
+Task ID: 2
+Agent: main (Z.ai Code)
+Task: New mascot-face logo in exactly 2 places (header top-left + hero avatar)
+
+Work Log:
+- Source of truth: file_00000000340481f4b5b88b2b9af7d716.png uploaded by the owner
+  at repo ROOT (commit dc80213) — single 1254px tile, gradient red body, white
+  arc-eyes smiley, tile touches canvas edges (corner R ≈ 22%).
+  (upload/pasted_image_*.png was a 20-variant sprite sheet — NOT used; repo file
+  byte-differs and is authoritative.)
+- Generated public/img/logo-face.png (full color, rounded-corner alpha, 512px) and
+  public/img/logo-face-soft.png (body recolored #f4959f, white face crisp — same
+  faded treatment the hero avatar already had).
+- Header.tsx: LogoTile SVG → next/image logo-face.png, fixed 34px box (geometry
+  identical to old tile), priority.
+- HeroBanner.tsx: inner pink square + Face SVG → next/image logo-face-soft.png at
+  px(26) inside the unchanged white tile (39px, radius 10, shadow).
+- Untouched on purpose: Drawer, ChatSheet, register page (still old SVG LogoTile),
+  mascot image, everything else.
+- Verified: agent-browser 390x844 (img complete, 34px + 23px rendered, zoom crops
+  clean), drawer visual check (old tile intact), e2e ALL PASS, e2e-s2 16/16,
+  lint clean, zero console errors.
+- Git: rebased onto owner's dc80213, pushed a6d947b + c70c2d6 to origin/main.
+
+Stage Summary:
+- New logo live in exactly the 2 requested spots; soft/faded variant in the hero;
+  all other logo instances and page parts untouched; remote in sync.
