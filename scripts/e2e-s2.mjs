@@ -26,7 +26,9 @@ const browser = await chromium.launch();
 
   console.log("— reveal on scroll —");
   const revealState = await page.evaluate(() => {
-    const el = document.querySelector("#scroll-2 .s2-reveal");
+    // [0] = section title (peeks into viewport 1 since the junction was tightened —
+    // revealed at load by design), [1] = first step illustration (below the fold).
+    const el = document.querySelectorAll("#scroll-2 .s2-reveal")[1];
     return { hasJs: document.documentElement.classList.contains("js"), isIn: el?.classList.contains("is-in"), opacity: el ? getComputedStyle(el).opacity : null };
   });
   ok(revealState.hasJs, "html.js flag set");
@@ -71,16 +73,22 @@ const browser = await chromium.launch();
   ok(chatBar.visible && chatBar.hasInput, "chat bar visible and interactive over Scroll 2");
 
   console.log("— header auto-hide —");
-  await page.evaluate(() => window.scrollTo({ top: 1000, behavior: "instant" }));
+  // Relative deltas (not absolute scrollTo) so the test stays valid regardless of
+  // total page height — absolute 1000/1100 can clamp to max-scroll and fire no event.
+  const scrollBy = (dy) =>
+    page.evaluate((d) => window.scrollBy({ top: d, behavior: "instant" }), dy);
+  await scrollBy(-200); // headroom first, so the "down" scrolls never clamp
   await page.waitForTimeout(150);
-  await page.evaluate(() => window.scrollTo({ top: 1100, behavior: "instant" }));
+  await scrollBy(300); // down → hide
+  await page.waitForTimeout(150);
+  await scrollBy(100); // further down
   await page.waitForTimeout(400);
   const hidden = await page.evaluate(() => {
     const h = document.querySelector("header");
     return { cls: h.className, rect: h.getBoundingClientRect().bottom };
   });
   ok(hidden.rect <= 0.5, `header hides on scroll down (bottom=${hidden.rect})`);
-  await page.evaluate(() => window.scrollTo({ top: 1000, behavior: "instant" }));
+  await scrollBy(-100); // up → show
   await page.waitForTimeout(400);
   const shown = await page.evaluate(() => {
     const h = document.querySelector("header");
