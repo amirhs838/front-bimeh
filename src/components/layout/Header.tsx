@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { LogoTile, Wordmark, Burger, Headset } from "@/components/icons";
+import { Wordmark, Burger, Headset } from "@/components/icons";
 import { content } from "@/data/content";
 import { useUI } from "@/lib/ui-store";
 import { px } from "@/lib/format";
@@ -60,7 +61,15 @@ export function Header() {
           className="flex items-center rounded-[0.625rem]"
           style={{ gap: px(14) }}
         >
-          <LogoTile size={34} radius={10} className="block" />
+          {/* brand mark — mascot-face logo (fixed 34px box, same as the old SVG tile) */}
+          <Image
+            src="/img/logo-face.png"
+            alt=""
+            width={68}
+            height={68}
+            priority
+            className="block h-[34px] w-[34px]"
+          />
           <Wordmark />
         </Link>
 

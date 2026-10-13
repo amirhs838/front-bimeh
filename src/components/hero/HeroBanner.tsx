@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { Face } from "@/components/icons";
 import { content } from "@/data/content";
 import { useUI } from "@/lib/ui-store";
 import { px } from "@/lib/format";
@@ -113,7 +112,13 @@ export function HeroBanner() {
             boxShadow: "0 4px 12px rgba(90,105,135,0.12)",
           }}
         >
-          <span
+          {/* mascot-face logo, faded (same soft-pink treatment as before) */}
+          <Image
+            src="/img/logo-face-soft.png"
+            alt=""
+            width={52}
+            height={52}
+            priority
             aria-hidden
             className="absolute"
             style={{
@@ -122,12 +127,8 @@ export function HeroBanner() {
               transform: "translate(-50%,-50%)",
               width: px(26),
               height: px(26),
-              borderRadius: px(8),
-              background: "#f4959f",
             }}
-          >
-            <Face strokeWidth={3.4} className="absolute inset-0" />
-          </span>
+          />
         </button>
 
         {/* typing indicator pill */}
