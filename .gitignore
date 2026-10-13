@@ -52,3 +52,10 @@ prompt
 server.log
 # Skills directory
 /skills/
+
+# project-internal artifacts (not part of the deployable app)
+/analysis/
+/upload/
+/db/
+/.zscripts/
+mini-services/
