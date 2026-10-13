@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LogoTile, Wordmark, Burger, Headset } from "@/components/icons";
 import { content } from "@/data/content";
 import { useUI } from "@/lib/ui-store";
@@ -10,15 +10,31 @@ import { px } from "@/lib/format";
 /**
  * Sticky header. Physically LTR-positioned like the reference:
  * logo tile + wordmark on the left; pill, headset, hamburger on the right.
- * Turns into blurred glass only after the page scrolls.
+ * Turns into blurred glass once the page scrolls; auto-hides on scroll DOWN
+ * and slides back (glass) on scroll UP, so section headings below the fold
+ * (e.g. "چرا Bimeh AI" at the top of Scroll 2) stay unobstructed.
+ * At scrollY = 0 it renders exactly like the reference.
  */
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const lastY = useRef(0);
   const openDrawer = useUI((s) => s.openDrawer);
   const openSupport = useUI((s) => s.openSupport);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 4);
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 4);
+      if (y <= 24) {
+        setHidden(false);
+      } else {
+        const dy = y - lastY.current;
+        if (dy > 8) setHidden(true);
+        else if (dy < -8) setHidden(false);
+      }
+      lastY.current = y;
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -26,7 +42,9 @@ export function Header() {
 
   return (
     <header
-      className={`sticky top-0 z-40 w-full transition-all duration-200 ${
+      className={`sticky top-0 z-40 w-full transition-all duration-300 ${
+        hidden ? "-translate-y-full" : "translate-y-0"
+      } ${
         scrolled
           ? "bg-[rgba(242,246,251,0.8)] backdrop-blur-md shadow-[0_1px_0_rgba(255,255,255,0.65),0_10px_26px_-16px_rgba(70,90,140,0.25)]"
           : "bg-transparent"

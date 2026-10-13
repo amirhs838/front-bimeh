@@ -11,6 +11,7 @@ export const site = {
   hours: "شنبه تا پنجشنبه، ۹ تا ۱۸",
   nav: [
     { label: "بیمه‌ها", href: "/#products" },
+    { label: "چرا Bimeh AI", href: "/#scroll-2" },
     { label: "خرید اقساطی", href: "/quote" },
     { label: "پیگیری سفارش", href: "#" },
     { label: "وبلاگ", href: "#" },

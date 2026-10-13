@@ -57,6 +57,9 @@
   --color-hero-1: var(--hero-1);
   --color-hero-2: var(--hero-2);
   --color-hero-3: var(--hero-3);
+  --color-s2-title: var(--s2-title);
+  --color-s2-step-title: var(--s2-step-title);
+  --color-s2-desc: var(--s2-desc);
 }
 
 :root {
@@ -110,6 +113,13 @@
   --hero-1: #e4eaf1;
   --hero-2: #e9eef4;
   --hero-3: #e2e7ee;
+
+  /* ---- Scroll 2 (sampled from 2.jpg) ---- */
+  --s2-top-bg: #eef2f5; /* C2 — top edge of the Scroll 2 reference */
+  --s2-bottom-bg: #e3e6eb; /* bottom wave end — Scroll 3 blends from here */
+  --s2-title: #0d1420;
+  --s2-step-title: #0d1119;
+  --s2-desc: #929aa4;
 }
 
 /*
@@ -119,6 +129,12 @@
  */
 html {
   font-size: min(100vw / 28.125, 17.0666px);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 @layer base {
@@ -207,6 +223,48 @@ html {
 }
 .anim-typing-dot {
   animation: dot-wave 1.2s ease-in-out infinite;
+}
+
+/* --- Scroll 2 --- */
+@keyframes s2-glow {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+.anim-s2-glow {
+  animation: s2-glow 2.4s ease-in-out infinite;
+}
+/* idle float for step illustrations (+-3px), staggered via animation-delay */
+.anim-s2-float {
+  animation: hero-float 5.6s ease-in-out infinite;
+}
+
+/* Reveal-on-scroll: hidden state applies ONLY when JS has flagged <html class="js">,
+   so the SSR/no-JS page renders everything visible. */
+.js .s2-reveal:not(.is-in) {
+  opacity: 0;
+  transform: translateY(16px);
+}
+.js .s2-reveal.is-in {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.5s ease-out,
+    transform 0.5s ease-out;
+}
+.js .s2-reveal-text.is-in {
+  transition-delay: 80ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  .js .s2-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

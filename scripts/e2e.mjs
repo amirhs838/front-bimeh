@@ -96,7 +96,7 @@ await page.waitForTimeout(350);
 check("drawer closes on overlay click", (await page.locator("[role=dialog]").count()) === 0);
 
 // ---------- 6. support sheet ----------
-await page.locator("button[aria-label='پشتیبانی']").click();
+await page.locator("header button[aria-label='پشتیبانی']").click();
 await page.waitForTimeout(400);
 const support = page.locator("[role=dialog]");
 check("support sheet opens", await support.isVisible());
@@ -138,7 +138,7 @@ check("empty enter focuses input (no sheet)", (await page.locator("[role=dialog]
 check("input focused", await chatInput.evaluate((el) => document.activeElement === el));
 
 // ---------- 8. hero ----------
-await page.locator("button[aria-label='شروع گفتگو با هوش مصنوعی']").first().click({ force: true });
+await page.locator("button[aria-label='شروع گفتگو با هوش مصنوعی']").first().click({ force: true }); // hero mascot (first match)
 await page.waitForTimeout(400);
 check("mascot/bubble opens chat", (await page.locator("[role=dialog]").count()) === 1);
 await page.keyboard.press("Escape");

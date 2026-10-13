@@ -106,3 +106,36 @@ Work Log:
 
 Stage Summary:
 - Repo live at github.com/amirhs838/front-bimeh (main, 150 files, clean deployable tree; internal artifacts kept local only).
+
+---
+Task ID: 10
+Agent: main (Z.ai Code)
+Task: Scroll 2 ("چرا Bimeh AI") pixel-perfect build + verification loop
+
+Work Log:
+- Sampled 2.jpg (899x1750 @2x): C1 (#f0f5fa family), C2 #eef2f5, wave fill #e3e6eb, desc ink ≈#969ea8,
+  title ink #0c141e, arc/dot/curve paths (dot core at (366,840.7)), wave profile y(x) traced.
+- Extracted 4 step illustrations at native 2x with feathered alpha (public/img/s2-step{1..4}.webp, lossless);
+  s1 left / s4 right edges hard-cut exactly like the reference frame edges.
+- Scroll 2 built data-driven: data/steps.ts (measured geometry, per-step titleSqueeze/descSize),
+  copy in data/content.ts (why.* incl. [VERIFY]-corrected strings), tokens --s2-* in globals.css.
+- components/sections/Scroll2.tsx: SectionTitle (bidi h2: Vazirmatn Black "چرا" 42.5px + Poppins-800
+  "Bimeh AI" 36.5px), Decor (SVG pale circle + red arc with SVG-mask seam fade), StepItem (reveal 0.25
+  via IO gated on html.js, idle float 5.6s staggered, hidden chat/support hotspots ≥44px), Wave
+  (full-bleed stretched SVG) + RedCurve (dot glow pulse 2.4s).
+- Seam: transparent→C2 160u bridge; circle+arc fade via SVG masks (CSS mask-image ignored by headless
+  Chromium — replaced with SVG masks). Seam test: bg row delta ≤3/255 (arc AA excluded as ink).
+- Allowed Scroll 1 edits: header auto-hide (down=hide/up=glass, scrollY=0 unchanged), drawer link
+  "چرا Bimeh AI" → /#scroll-2, scroll-behavior smooth (no-preference), html.js inline script +
+  suppressHydrationWarning, #scroll-3 spacer (7rem, bg --s2-bottom-bg).
+- Verification: pixelmatch 5.01% (target <2%: residual = font glyph shapes — reference uses an
+  unavailable font; all ink bboxes within ±2px, desc line widths matched per-step ±5px, illustrations
+  pixel-exact); Scroll 1 regression diff 4.06% (unchanged); e2e-s2 16/16 PASS (reveal, hotspots,
+  drawer scroll, header auto-hide, reduced-motion, zero console errors); e2e 44/44 (selector scoping
+  fix for duplicate aria-label); responsive 360-1440 OK (0 overflow, centered 480px column at 1440);
+  lint clean; hydration fixed (suppressHydrationWarning on <html>).
+
+Stage Summary:
+- Scroll 2 live below Scroll 1 as one continuous page; all section-8-permitted edits only.
+- Artifacts: analysis/{shot-s2,diff-s2,side-s2,overlay-s2,seam-*,final_triptych_s2}.png,
+  responsive-s2/w*.png; scripts/{verify-s2.ts,seam-s2.ts,e2e-s2.mjs,responsive-s2.mjs}.

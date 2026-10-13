@@ -27,6 +27,15 @@ const poppins = localFont({
   preload: false,
 });
 
+// Vazirmatn Black — used only for the Scroll 2 heading's Persian part
+// (closest glyph proportions to the reference "چرا").
+const vazirBlack = localFont({
+  src: [{ path: "../fonts/Vazirmatn-Black.woff2", weight: "900", style: "normal" }],
+  variable: "--font-vazir-black",
+  display: "swap",
+  preload: false,
+});
+
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -57,8 +66,22 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="fa" dir="rtl" className={`${vazir.variable} ${poppins.variable}`}>
-      <body className="antialiased text-foreground">{children}</body>
+    <html
+      lang="fa"
+      dir="rtl"
+      className={`${vazir.variable} ${poppins.variable} ${vazirBlack.variable}`}
+      suppressHydrationWarning
+    >
+      <body className="antialiased text-foreground">
+        {/* flags JS availability before first paint — scroll-reveal hidden
+            states only apply when this class is present (no-JS = all visible) */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.classList.add('js');",
+          }}
+        />
+        {children}
+      </body>
     </html>
   );
 }
