@@ -91,3 +91,18 @@ Work Log:
 Stage Summary:
 - Pixel loop converged; all interactions verified; responsive verified. Artifacts: analysis/final_triptych.png,
   side.png, diff.png, shot.png, responsive/w*.png.
+
+---
+Task ID: 9
+Agent: main (Z.ai Code)
+Task: Push project to GitHub repo (github.com/amirhs838/front-bimeh)
+
+Work Log:
+- Cleaned git index: untracked analysis/ (comparison artifacts), upload/ (reference image), db/ (runtime SQLite), .zscripts/, .env, mini-services/ — added to .gitignore.
+- Renamed package: "nextjs_tailwind_shadcn_ts" → "front-bimeh" v1.0.0; validated JSON.
+- Added README.md (fa/en): features, quick start, scripts table, structure, notes.
+- Committed "feat: Bimeh AI Scroll 1 — pixel-perfect RTL build" (150 files at HEAD).
+- Added remote origin (token-embedded URL) and pushed main → verified remote HEAD 929dcae matches local.
+
+Stage Summary:
+- Repo live at github.com/amirhs838/front-bimeh (main, 150 files, clean deployable tree; internal artifacts kept local only).
