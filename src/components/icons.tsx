@@ -1,4 +1,5 @@
 import type { SVGProps } from "react";
+import Image from "next/image";
 import { px } from "@/lib/format";
 
 /** Smiling face (two closed-eye arcs + smile) used in the logo tile and avatar. */
@@ -31,23 +32,29 @@ export function Face({
   );
 }
 
-/** Red rounded logo tile with the white face. */
+/**
+ * Brand logo tile — the same mascot-face PNG used in the header
+ * (/img/logo-face.png). Rendered as an image so every surface (chat sheet,
+ * drawer, register page, ...) shows exactly the header logo.
+ * `radius` is accepted for backward compatibility but ignored: the PNG has
+ * its rounded corners baked in, identical to the header rendering.
+ */
 export function LogoTile({
   size = 34,
-  radius = 10,
-  ...props
-}: SVGProps<SVGSVGElement> & { size?: number; radius?: number }) {
+  className,
+}: {
+  size?: number;
+  radius?: number;
+  className?: string;
+}) {
   return (
-    <svg
+    <Image
+      src="/img/logo-face.png"
+      alt=""
       width={size}
       height={size}
-      viewBox="0 0 34 34"
-      aria-hidden
-      {...props}
-    >
-      <rect width="34" height="34" rx={radius} fill="var(--brand)" />
-      <Face />
-    </svg>
+      className={`block ${className ?? ""}`}
+    />
   );
 }
 

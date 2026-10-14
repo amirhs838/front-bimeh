@@ -8,7 +8,7 @@ import {
   SheetDescription,
   SheetCloseButton,
 } from "./sheet-primitives";
-import { Headset, Sparkles, Wordmark, LogoTile } from "@/components/icons";
+import { Headset, Sparkles, Wordmark } from "@/components/icons";
 import { content } from "@/data/content";
 import { site } from "@/data/site";
 import { useUI } from "@/lib/ui-store";
