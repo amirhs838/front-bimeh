@@ -318,3 +318,20 @@ Stage Summary:
 - Artifacts: analysis/{shot-f,diff-f,side-f,overlay-f,seam-f-*,endpage-f,
   responsive-f/}.png, analysis/f4/*, scripts/{verify-f.ts,seam-f.ts,e2e-f.mjs,
   responsive-f.mjs}.
+
+---
+Task ID: logo-unify
+Agent: Z.ai Code (main)
+Task: Replace all remaining old SVG logos with the new header logo (/img/logo-face.png) — chat sheet, hamburger drawer, register page
+
+Work Log:
+- Audited every logo reference in src: Header (new PNG already), HeroBanner (soft PNG already), ChatSheet, Drawer, register/page (all used old LogoTile SVG), SupportSheet (unused import)
+- Rewrote LogoTile in src/components/icons.tsx to render /img/logo-face.png via next/image (radius prop kept for compat, ignored — PNG has baked corners)
+- Removed unused LogoTile import from SupportSheet.tsx
+- Added icons.metadata (favicon) pointing to /img/logo-face.png in src/app/layout.tsx
+- Deleted orphaned old public/logo.svg (zero references)
+- Verified via agent-browser: chat sheet header, drawer header, register page all render the new logo identical to header; lint clean; dev.log 200s only
+- Committed 952ae3c and pushed to github.com/amirhs838/front-bimeh main
+
+Stage Summary:
+- Single-source fix: LogoTile component now renders the header PNG, so chat/drawer/register/favicon all match the header logo exactly
