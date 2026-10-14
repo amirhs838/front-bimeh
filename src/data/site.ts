@@ -1,4 +1,7 @@
-/** Site-wide configuration: navigation, contact channels, branding. */
+/** Site-wide configuration: navigation, contact channels, branding.
+ *  Footer routes + contact values live here too (single source of truth —
+ *  the footer and the Drawer both read from this file).
+ *  NOTE: contact values are PLACEHOLDERS (also used by the JSON-LD block). */
 export const site = {
   name: "بیمه شو",
   latinName: "Bimeh AI",
@@ -14,10 +17,23 @@ export const site = {
     { label: "چرا Bimeh AI", href: "/#scroll-2" },
     { label: "مزایای Bimeh AI", href: "/#scroll-3" },
     { label: "خرید اقساطی", href: "/quote" },
-    { label: "پیگیری سفارش", href: "#" },
-    { label: "وبلاگ", href: "#" },
-    { label: "درباره ما", href: "#" },
-    { label: "تماس با ما", href: "#" },
+    { label: "پیگیری سفارش", href: "/track" },
+    { label: "وبلاگ", href: "/blog" },
+    { label: "درباره ما", href: "/about" },
+    { label: "تماس با ما", href: "/contact" },
     { label: "ثبت نام", href: "/register" },
   ],
+  /** Footer contact (rendered physically LTR: [icon] [text] [chevron]).
+   *  Values are PLACEHOLDERS replicating the reference image. */
+  footerContact: {
+    address: "تهران، خیابان ولیعصر، پلاک ۱۳۳",
+    addressW: 130.9, // measured label width (frame u) for the dir=rtl span
+    email: "info@bimeh.ai", // PLACEHOLDER — display copy from the image
+    emailHref: "mailto:info@bimeh.ai",
+    emailW: 73.0,
+    phoneDisplay: "۰۲۱-۹۱۰۰-۰۰۰۰", // PLACEHOLDER — display copy from the image
+    phoneHref: "tel:+982191000000", // PLACEHOLDER
+    phoneW: 62.1,
+    mapUrl: "https://www.google.com/maps?q=تهران،خیابان+ولیعصر،+پلاک+۱۳۳", // PLACEHOLDER
+  },
 } as const;

@@ -130,6 +130,17 @@
   --s3-photo-bg: #d3d7db;     /* hero photo studio gray (loading placeholder) */
   --s3-notif-bg: rgba(62, 66, 73, 0.82);
   --s3-notif-time: #a6b6d6;
+
+  /* ---- Footer (sampled from 4.png, s=2.1244) ---- */
+  --f-outside-bg: #f1f6f9;    /* page bg around the card (sampled at margins) */
+  --f-card-bg: #f5f9fc;       /* card fill (sampled, not pure white) */
+  --f-ink: #101a34;           /* headings / column titles (near-navy core) */
+  --f-text: #5b6a89;          /* paragraph + labels + contact (one sampled tone) */
+  --f-chevron: #5b6a89;       /* chevrons (same sampled core as labels) */
+  --f-pill-bg: #f3f3f9;       /* quick-access pill fill (pale lavender, NOT pink) */
+  --f-pill-icon-bg: #f7e7ee;  /* pale pink icon circle */
+  --f-divider: #dfe6ef;       /* 1px divider */
+  --footer-gap: 2rem;         /* Scroll 3 -> footer card gap (32u) */
 }
 
 /*
@@ -288,10 +299,40 @@ html {
     opacity 0.5s ease-out,
     transform 0.5s ease-out;
 }
+/* --- Footer reveal (same no-JS-safe pattern) --- */
+/* extended hit targets for footer rows (vars set inline per row) */
+.f-hit::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--hit-t, 0);
+  bottom: var(--hit-b, 0);
+}
+.js .f-reveal:not(.is-in) {
+  opacity: 0;
+  transform: translateY(16px);
+}
+.js .f-reveal.is-in {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.5s ease-out,
+    transform 0.5s ease-out;
+}
+.js .f-fade:not(.is-in) {
+  opacity: 0;
+}
+.js .f-fade.is-in {
+  opacity: 1;
+  transition: opacity 0.7s ease-out;
+}
 @media (prefers-reduced-motion: reduce) {
   .js .s2-reveal,
   .js .s3-reveal,
-  .js .s3-fade {
+  .js .s3-fade,
+  .js .f-reveal,
+  .js .f-fade {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;

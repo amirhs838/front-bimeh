@@ -245,3 +245,76 @@ Stage Summary:
 - Scroll 3 live below Scroll 2 as one continuous page; commit 9317a59 pushed.
 - Artifacts: analysis/{shot-s3,diff-s3,side-s3,overlay-s3,seam3-*,responsive-s3/},
   scripts/{verify-s3.ts,seam-s3.ts,e2e-s3.mjs,responsive-s3.mjs}.
+
+---
+Task ID: 4
+Agent: main (Z.ai Code)
+Task: FOOTER (end of Scroll 3) — pixel-perfect build from 4.png (master prompt)
+
+Work Log:
+- Sampled 4.png (956x1645, s=2.1244 -> frame 450x774.3u). Edge-detected real
+  geometry: card x16.2-437.5 y3.0-763.6 r14 (outer margins NOT equal in the
+  file: 16.2/12.5 — replicated as-is); wordmark bbox 290.4-420.8 x 41.4-65.0;
+  h2 cy96.3 w192.5; para 5 lines cy 124.5-209.9 pitch ~21.3, right edge 421;
+  QA title cy240.5 + underline cy254.9 w24.5; 4 pills x36.2-418.9 h~33.4 pitch
+  41.75, icon circle d32 FLUSH with pill right edge (center x402.5), labels
+  right edge 374.2; col titles cy458.5/459.6 + underlines cy476.6 (R w25.9,
+  L w24.9); rows cy 497.1/523.0/549.8/575.9 (pitch 26.27), chevrons R cx265
+  L cx46.85; divider y606.3 x36-420.8; contact rows: icon cx244.3 (pin 8.5x11.3,
+  envelope 12.2x9.9, phone 10.8x10.8), text left 268.8, chev cx412.5; waves
+  traced (light crest x~43 y687 -> trough x~280 y741 -> right edge y~699;
+  strong crest x~105 y707 -> trough x~280 y741 -> flat y~713.1 at right);
+  red curve measured through dot (357.5,719.5) exiting right edge y~698;
+  dot core #FB254F.
+- Colors sampled: --f-card-bg #F5F9FC, --f-outside-bg #F1F6F9, --f-ink #101A34,
+  muted text/labels/chevrons ONE core tone #5B6A89 (prompt's split --f-text/
+  --f-label #6F7893/#5F6780 not supported by sampling), --f-pill-bg #F3F3F9
+  (pale lavender, NOT the prompt's pink-lilac #F5EEF3 — image wins, no
+  horizontal gradient), --f-pill-icon-bg #F7E7EE, --f-divider #DFE6EF,
+  waves light #F7F1F6 / strong #F8E7EF->#F7EBF1, curve #F83153.
+- Data-driven build: src/data/footer.ts (all copy incl. [VERIFY]-corrected
+  paragraph, per-item measured geometry + per-item width-calibrated font
+  sizes); hrefs/contact in src/data/site.ts (single source; Drawer's site.nav
+  hrefs updated: /track /blog /about /contact).
+- components/sections/Footer.tsx + f-icons.tsx (shield-check, headset,
+  question, filled phone/pin/envelope, left chevron — ink-fitted sizes).
+  Paragraph justified via flex space-between at measured widths ("Bimeh AI"
+  as one dir=ltr Poppins island); decor SVG (waves + curve w/ SVG-mask fade
+  + pulsing dot) clipped by card; reveal groups as absolute inset-0 overlays
+  (transformed wrapper = containing block — keeps child coords card-relative).
+- CRITICAL RTL find: block child narrower than container with under-constrained
+  margins gets the leftover space moved to margin-LEFT in RTL (card sat +12.5px
+  off) — fixed by pinning BOTH margins (16.2 + 12.5 = 450).
+- Reduced-motion override (transform:none !important) killed inline translateY
+  centering on the wordmark -> static top positioning instead.
+- Icon ink-vs-box calibration: Material-style paths only fill ~75-83% of their
+  viewBox -> sizes fitted so DRAWN INK matches the image (shield 17.1x16.5 etc).
+- Inset white top highlight removed (image shows no bright top line; seam test
+  caught it: 7.3/255 -> 1.7/255 after removal).
+- Card shadow tuned to sampled falloff (below-only, no side darkening).
+- 8 stub pages (/faq /contact /track /app /about /blog /careers /terms) via
+  shared StubPage + SubPageShell; id="products" already on the product grid;
+  optional JSON-LD Organization added in page.tsx (placeholder values flagged).
+- Allowed edits honored: page.tsx footer slot swap; Scroll3 pb -> --footer-gap
+  (32u); site.ts additions; e2e-s3 footer-slot assertion updated to footer#footer.
+- Verification: verify-f.ts measure loop (DOM Range vs targets) — card w/h
+  +0.0, all right/left edges +0.0-0.2, per-line widths within quantization;
+  pixelmatch vs 4.png resized 900x1550: 4.02% (residual = glyph shapes + AI
+  kashida; same accepted class as S2 5.00% / S3 4.45%); regressions S1 4.03 /
+  S2 5.00 / S3 4.45 unchanged; seam S3->footer 1.3-1.7/255 (OK, hidden+shown);
+  end-of-page gap 10.4u >= 10; e2e-f 39/39 (routes, sheets, mailto/tel/map,
+  keyboard order, focus, hover pill+chevron-nudge, reduced motion, smooth
+  scroll to products, zero console errors); responsive 360-1440 zero overflow;
+  Lighthouse mobile a11y 96 / CLS 0 (perf 59 = dev-server LCP overhead, same
+  documented limitation as S3; 2 flagged a11y items are pre-existing Scroll 1
+  elements, untouched per §12); agent-browser golden-path pass at 390x844.
+- 11px floor NOT applied to calibrated text (smallest 9.4u): it would break
+  §10.2's "identical width/position" — same precedent as Scroll 3's 9.41u.
+  No horizontal overflow at any width; nowrap lines never rewrap.
+
+Stage Summary:
+- Footer live as the end of the page; card matches 4.png (structure <=1u);
+  seams/regressions green; commit pushed.
+- Artifacts: analysis/{shot-f,diff-f,side-f,overlay-f,seam-f-*,endpage-f,
+  responsive-f/}.png, analysis/f4/*, scripts/{verify-f.ts,seam-f.ts,e2e-f.mjs,
+  responsive-f.mjs}.

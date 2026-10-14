@@ -31,13 +31,13 @@ const browser = await chromium.launch();
     title: document.getElementById("s3-title")?.textContent.includes("اولین پلتفرم"),
     cards: document.querySelectorAll("#scroll-3 li").length,
     srText: document.querySelector("#scroll-3 .sr-only")?.textContent.includes("1m ago"),
-    footerSlot: !!document.getElementById("footer-slot"),
+    footerAfter: !!document.getElementById("footer"),
     hScroll: document.documentElement.scrollWidth > window.innerWidth,
   }));
   ok(struct.section && struct.labelled && struct.title, "section semantics (#scroll-3 / s3-title)");
   ok(struct.cards === 5, `5 feature cards — got ${struct.cards}`);
   ok(struct.srText, "visually-hidden notification copy present");
-  ok(struct.footerSlot, "#footer-slot present after the section");
+  ok(struct.footerAfter, "footer#footer present after the section");
   ok(!struct.hScroll, "no horizontal scroll at 450");
 
   console.log("— reveal on scroll —");

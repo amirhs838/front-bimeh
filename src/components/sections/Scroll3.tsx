@@ -243,8 +243,8 @@ export function Scroll3() {
       ref={rootRef}
       id="scroll-3"
       aria-labelledby="s3-title"
-      className="relative overflow-x-clip pb-[calc(1rem+env(safe-area-inset-bottom))]"
-      style={{ background: "var(--s3-bg)" }}
+      className="relative overflow-x-clip"
+      style={{ background: "var(--s3-bg)", paddingBottom: "var(--footer-gap)" }}
     >
       {/* bridge from Scroll 2's wave end into this section's lighter bg
           (top 57u safe zone) + the reference's 1-2% vertical drift */}
