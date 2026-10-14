@@ -12,6 +12,7 @@ export const site = {
   nav: [
     { label: "بیمه‌ها", href: "/#products" },
     { label: "چرا Bimeh AI", href: "/#scroll-2" },
+    { label: "مزایای Bimeh AI", href: "/#scroll-3" },
     { label: "خرید اقساطی", href: "/quote" },
     { label: "پیگیری سفارش", href: "#" },
     { label: "وبلاگ", href: "#" },

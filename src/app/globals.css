@@ -120,6 +120,16 @@
   --s2-title: #0d1420;
   --s2-step-title: #0d1119;
   --s2-desc: #929aa4;
+
+  /* ---- Scroll 3 (sampled from 3.jpg) ---- */
+  --s3-bg: #f4f8fa;           /* base page bg of Scroll 3 (drift via gradient layer) */
+  --s3-card-bg: #f8fafc;      /* feature card fill (sampled — not pure white) */
+  --s3-card-title: #1b2340;   /* dark navy card titles */
+  --s3-card-desc: #8797b3;    /* muted blue-gray descriptions */
+  --s3-icon-tile: #faecee;    /* pale pink icon tiles */
+  --s3-photo-bg: #d3d7db;     /* hero photo studio gray (loading placeholder) */
+  --s3-notif-bg: rgba(62, 66, 73, 0.82);
+  --s3-notif-time: #a6b6d6;
 }
 
 /*
@@ -259,8 +269,29 @@ html {
 .js .s2-reveal-text.is-in {
   transition-delay: 80ms;
 }
+/* --- Scroll 3 reveal (same no-JS-safe pattern) --- */
+.js .s3-fade:not(.is-in) {
+  opacity: 0;
+}
+.js .s3-fade.is-in {
+  opacity: 1;
+  transition: opacity 0.6s ease-out;
+}
+.js .s3-reveal:not(.is-in) {
+  opacity: 0;
+  transform: translateY(16px);
+}
+.js .s3-reveal.is-in {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.5s ease-out,
+    transform 0.5s ease-out;
+}
 @media (prefers-reduced-motion: reduce) {
-  .js .s2-reveal {
+  .js .s2-reveal,
+  .js .s3-reveal,
+  .js .s3-fade {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;

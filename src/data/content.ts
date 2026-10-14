@@ -118,4 +118,60 @@ export const content = {
       },
     ],
   },
+  intro: {
+    /** Scroll 3 — "معرفی + ویژگی‌ها" (reference: 3.jpg). Hero photo is Mode B
+     *  (notification banner baked into the raster); its text lives here for
+     *  screen readers / SEO and seeds the chat when the hotspot is pressed. */
+    heroAlt: "گوشی هوشمند با اعلان Bimeh AI و شخصیت قرمز بیمه",
+    notif: {
+      app: "Bimeh AI",
+      time: "1m ago",
+      lines: [
+        "سلام!",
+        "میخوای با هوش مصنوعی تصادف ماشینت رو",
+        "بررسی کنم؟",
+      ],
+    },
+    eyebrow: "چرا Bimeh AI ؟",
+    headingL1: "اولین پلتفرم آنلاین فروش بیمه",
+    headingWord: "دارای",
+    headingLatin: "AI",
+    cards: [
+      {
+        title: "معرفی سه بیمه برتر با توجه به نیاز هر فرد",
+        lines: [
+          "با تحلیل نیازها و شرایط شما، بهترین گزینه‌های بیمه",
+          "را پیشنهاد می‌دهیم.",
+        ],
+      },
+      {
+        title: "تحت نظارت بیمه مرکزی",
+        lines: [
+          "با مجوز رسمی و تحت نظارت بیمه مرکزی، جمهوری",
+          "اسلامی ایران.",
+        ],
+      },
+      {
+        title: "صدور سریع بیمه‌نامه",
+        lines: [
+          "در کمترین زمان، بیمه‌نامه خود را به‌صورت آنلاین",
+          "دریافت کنید.",
+        ],
+      },
+      {
+        title: "امکان خرید اقساطی بیمه‌نامه",
+        lines: [
+          "با شرایط منعطف و پرداخت آسان، بیمه مورد نیازتان",
+          "را قسطی تهیه کنید.",
+        ],
+      },
+      {
+        title: "همکاری با تمام شرکت‌های بیمه",
+        lines: [
+          "دسترسی به تمامی شرکت‌های بیمه معتبر کشور",
+          "در یک پلتفرم.",
+        ],
+      },
+    ],
+  },
 } as const;

@@ -50,11 +50,17 @@ export function ChatSheet() {
     }
   };
 
-  // seed the conversation when opened from the chat bar / hero
+  // seed the conversation when opened from the chat bar / hero / notification
   useEffect(() => {
     if (open && seed && seed !== consumedSeed.current) {
       consumedSeed.current = seed;
-      void send(seed);
+      const role = useUI.getState().chatSeedRole;
+      if (role === "bot") {
+        // seeded assistant greeting (e.g. Scroll 3 notification hotspot) — no API call
+        setMsgs((m) => [...m, { id: nextId++, role: "bot", text: seed }]);
+      } else {
+        void send(seed);
+      }
       useUI.setState({ chatSeed: null });
     }
     if (open) {
