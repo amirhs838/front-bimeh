@@ -198,3 +198,50 @@ Work Log:
 Stage Summary:
 - New logo live in exactly the 2 requested spots; soft/faded variant in the hero;
   all other logo instances and page parts untouched; remote in sync.
+
+---
+Task ID: 3
+Agent: main (Z.ai Code)
+Task: Scroll 3 ("معرفی + ویژگی‌ها") pixel-perfect build below Scroll 2 (master prompt, ref 3.jpg)
+
+Work Log:
+- Verified 3.jpg = 873x1802, s=1.94, frame 450x929. Edge-detected real geometry:
+  hero x18-432 y57-357; card tops 484/567/648.5/730.4/811.3 (h 71.6-73.7);
+  tiles 50x45.5 @ right-12; icon tile c3 49x44.8 @ x370.1; heading bands
+  L1 403.6-427.3 / word 439.7-462.9 / AI 437.1-458.2 (cap 21.1u, w 29.4).
+- Colors sampled (percentile): --s3-bg #f4f8fa (drift #f6f9fb->#f3f7fa),
+  card #f8fafc (NOT pure white — image wins), title #1b2340, desc #8797b3,
+  tile #faecee, photo-bg #d3d7db.
+- MODE B hero: crop x37-836 y112-690 (2px inset), pre-scaled lanczos to exact
+  828x600 (2x of 414x300), webp q93 30KB; sr-only banner copy; hotspot
+  (rel 87,175.5, 241x69) -> openChat(seed, "bot").
+- ChatSheet/ui-store: added chatSeedRole ("user"|"bot") — bot seed inserts the
+  assistant message directly, no API call; existing call sites unchanged.
+- Calibration loop (verify-s3.ts measure): discovered canvas metrics used a
+  fallback font AND an early font-load race — switched to DOM Range probes with
+  explicit document.fonts.load; widths respond ~quadratically at DPR2 (device-px
+  advance quantization) → fixed-point iteration to per-line sizes. Final: heading
+  L1 20.1/word 23.87/AI 31.5+scaleX(.865) origin-left (row laid out to visual
+  targets 179.4-208.8 / 219.6-270.1 exactly); eyebrow 11.8 (text 76.8u);
+  per-card titles [10.94,10.45,10.45,9.78,9.41], desc L1/L2 per line
+  (image replicates per-item size variations: card1 title visibly larger).
+- pixelmatch 4.45% (900x1858): region breakdown — hero photo = 79% of residual
+  (JPEG/resample noise, irreducible), cards 20%, header 13%, heading 10%.
+  Scroll 1 4.03% / Scroll 2 5.00% — no regression.
+- Seam s2->s3: junction rows ≤1/255 header hidden+shown; initial 7/255 reading
+  was Scroll 2's wave-crest drop-shadow AA crossing a scan row (content, kept).
+  Wave/red curve/glowing dot intact (seam3-pair.png).
+- e2e-s3 18/18 (semantics, reveal, hotspot 241x69 -> seeded assistant msg,
+  drawer "مزایای Bimeh AI" -> /#scroll-3 aligned 0.0, chat bar over s3, zero
+  console errors, reduced-motion). responsive-s3 360-1440 OK (no overflow,
+  text-tile min gap 24.4px at 360, column centered at 1440).
+- Lighthouse mobile: a11y 96, CLS 0; performance 65 vs DEV server (build
+  forbidden in sandbox) — LCP 10.9s is dev-server overhead; s3 hero lazy.
+- Allowed edits honored: page.tsx slot swap + #footer-slot; drawer link;
+  content/data; ui-store/ChatSheet minimal seeding hook (required by §6);
+  header glass and Scroll 2 untouched.
+
+Stage Summary:
+- Scroll 3 live below Scroll 2 as one continuous page; commit 9317a59 pushed.
+- Artifacts: analysis/{shot-s3,diff-s3,side-s3,overlay-s3,seam3-*,responsive-s3/},
+  scripts/{verify-s3.ts,seam-s3.ts,e2e-s3.mjs,responsive-s3.mjs}.
