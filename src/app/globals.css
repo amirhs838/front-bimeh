@@ -396,6 +396,14 @@ html {
     --dk-band-bg: #eff5fd;
     --dk-strip-bg: #fdeef4;
     --s1-bottom-bg: #f9fbfd; /* D1 bottom (y1005-1020, x20-50) */
+    /* --- Scroll 2 desktop (D2) --- */
+    /* D2 x300-1200, y1005-1020. Consumed by Scroll 3's full-bleed top bridge;
+       the mobile token value above stays untouched. */
+    --s2-bottom-bg: #f5f8fa;
+    --dk2-bg-edge: #eef2f5; /* D2 corners/edges */
+    --dk2-title: #071022;   /* D2 title ink core (sampled (4,13,27)) */
+    --dk2-step-title: #050d1b; /* D2 step-title ink core */
+    --dk2-desc: #6f86a2;    /* D2 desc ink core (sampled (111,134,162)) */
   }
 
   html,
@@ -413,7 +421,9 @@ html {
 
   /* ---------------- Scroll 1 root ---------------- */
   .s1-root {
-    padding-bottom: calc(113 * var(--d)); /* 40d tail + 49d bar + 24d bottom */
+    /* §3A: with desktop Scroll 2 now following, the chat-bar clearance moves
+       to the end of the page (footer) — tail is 40d (was 40d + 73d). */
+    padding-bottom: calc(40 * var(--d));
     background: linear-gradient(180deg, #f6f9fd 0%, #f8fbfd 55%, var(--s1-bottom-bg) 100%);
   }
   .s1-root > div {
@@ -827,5 +837,135 @@ html {
   .dk-support[data-state="closed"] {
     animation: dk-dialog-out 0.18s ease-in !important;
   }
+
+  /* ===================================================================
+     SCROLL 2 (desktop, D2 "Bimeh AI Smart Insurance Features.png",
+     frame 1536x1024, 1d = 1px @1536; coordinates measured on D2)
+     =================================================================== */
+
+  /* ---------------- section root: 1024d + D2 background profile ----------
+     D2 bg = a HORIZONTAL profile (dark corners ~#EEF2F5, bright center
+     ~#F8FAFC) constant down the section. A flat --s1-bottom-bg bridge overlay
+     fades out over the first 120d (§3A) so the S1 junction is seamless and
+     the profile is fully developed by y120 (Δ11/255 at the corners vs D2's
+     top row is below pixelmatch's threshold and fades at 0.09/255 per row). */
+  .s2-root {
+    height: calc(1024 * var(--d)) !important;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(249, 251, 253, 1) 0%,
+        rgba(249, 251, 253, 0) calc(120 * var(--d))
+      ),
+      linear-gradient(
+        90deg,
+        #eef2f5 0%,
+        #f3f6f9 10%,
+        #f4f7fa 20%,
+        #f7f9fb 33%,
+        #f8fafc 50%,
+        #f7f9fb 67%,
+        #f4f7fa 80%,
+        #f3f6f9 90%,
+        #edf1f5 100%
+      ) !important;
+  }
+  .s2-container {
+    max-width: none !important;
+    width: calc(1536 * var(--d));
+  }
+  /* mobile-only pieces die on desktop (hooks added without mobile effect) */
+  .s2-m-decor,
+  .s2-m-wave,
+  .s2-m-curve {
+    display: none !important;
+  }
+  .s2-decor-dk {
+    display: block;
+  }
+
+  /* S2→S3 bridge (§9d, CSS-only override of the existing bridge layer):
+     row 0 = the same H(x) profile as S2's bottom row (seam Δ0), converging
+     to the flat --s3-bg tone by 200d. Selector targets the aria-hidden
+     bridge div without touching Scroll3.tsx. */
+  #scroll-3 > div[aria-hidden="true"]:first-child {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(244, 248, 250, 0) 0%,
+        #f4f8fa calc(200 * var(--d))
+      ),
+      linear-gradient(
+        90deg,
+        #eef2f5 0%,
+        #f3f6f9 10%,
+        #f4f7fa 20%,
+        #f7f9fb 33%,
+        #f8fafc 50%,
+        #f7f9fb 67%,
+        #f4f7fa 80%,
+        #f3f6f9 90%,
+        #edf1f5 100%
+      ) !important;
+  }
+
+  /* ---------------- title (ink: Latin x564-847, چرا x873-972, y49-126) */
+  .s2-title {
+    top: calc(48 * var(--d)) !important;
+    right: calc(561 * var(--d)) !important;
+    font-size: calc(63 * var(--d)) !important;
+    color: var(--dk2-title) !important;
+  }
+  .s2-title-fa {
+    font-size: calc(84 * var(--d)) !important;
+  }
+
+  /* ---------------- steps: D2 geometry via per-step CSS vars ---------- */
+  .s2-illu {
+    left: calc(var(--dkx) * var(--d)) !important;
+    top: calc(var(--dky) * var(--d)) !important;
+    width: calc(var(--dkw) * var(--d)) !important;
+    height: calc(var(--dkh) * var(--d)) !important;
+  }
+  /* NOTE: .s2-img-m is the <img> INSIDE <picture> — the desktop <source>
+     swaps the resource on the same element; never hide it here. */
+  .s2-text {
+    right: calc((1536 - var(--dktr)) * var(--d)) !important;
+    top: calc((var(--dkty) - 26) * var(--d)) !important; /* 52d title line box */
+  }
+  .s2-text h3 {
+    font-size: calc(var(--dkt) * var(--d)) !important;
+    line-height: calc(52 * var(--d)) !important;
+    transform: none !important; /* D2 renders natural width (no mobile squeeze) */
+    color: var(--dk2-step-title) !important;
+  }
+  .s2-desc-m {
+    display: none !important;
+  }
+  .s2-desc-dk {
+    display: block;
+    margin-top: calc(var(--dkmt) * var(--d));
+    font-size: calc(var(--dkd1) * var(--d));
+    line-height: calc(37 * var(--d));
+    color: var(--dk2-desc);
+  }
+  .s2-desc-dk span {
+    display: block;
+    white-space: nowrap;
+  }
+  /* D2 renders per-line sizes (replicated via data, §5.C) */
+  .s2-desc-dk span:nth-child(2) {
+    font-size: calc(var(--dkd2) * var(--d));
+  }
+
+  /* hotspots: desktop positions (% of the desktop art box, §8) */
+  .s2-hotspot {
+    left: var(--dkhl) !important;
+    top: var(--dkht) !important;
+    width: var(--dkhw) !important;
+    height: var(--dkhh) !important;
+  }
 }
 /* ===================== END DESKTOP >=1280 ===================== */
+
+

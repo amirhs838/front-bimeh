@@ -32,6 +32,26 @@ export type WhyStep = {
     action: "chat" | "support";
     aria: string;
   };
+
+  /* ------------------------------------------------------------------
+   * DESKTOP (>=1280) — D2 frame 1536x1024, 1d = 1px @1536.
+   * All values measured on upload/"Bimeh AI Smart Insurance Features.png"
+   * (per-line ink bboxes; the image wins over prompt estimates).
+   * ------------------------------------------------------------------ */
+  /** desktop illustration crop box (frame d units); asset is exact 2x */
+  dkIllu: { src: string; x: number; y: number; w: number; h: number };
+  /** desktop right edge of the text block = ink right edge (d units from frame left) */
+  dkTextRight: number;
+  /** ink center y of the title line (d units) */
+  dkTitleCy: number;
+  /** ink centers of the 2 desktop description lines (d units) */
+  dkDescCys: [number, number];
+  /** calibrated desktop font sizes (d units) — title + PER-LINE description
+   *  sizes (D2 renders slightly different sizes per line, replicated) */
+  dkTitleSize: number;
+  dkDescSizes: [number, number];
+  /** desktop hotspot box as percentages of the desktop art box */
+  dkHotspot?: { l: number; t: number; w: number; h: number };
 };
 
 export const TITLE_LH = 24; // step-title line box (CSS px)
@@ -48,6 +68,13 @@ export const steps: WhyStep[] = [
     illu: { src: "/img/s2-step1.webp", x: 0, y: 91, w: 254, h: 202 },
     descSize: 10.4,
     hotspot: { x: 44, y: 104, w: 136, h: 142, action: "chat", aria: w.chatHotspotAria },
+    dkIllu: { src: "/img/s2d-step1-phone.webp", x: 147, y: 100, w: 463, h: 321 },
+    dkTextRight: 1385,
+    dkTitleCy: 217.5,
+    dkDescCys: [271, 308],
+    dkTitleSize: 36.1,
+    dkDescSizes: [21, 21.4],
+    dkHotspot: { l: 35.637, t: 6.854, w: 36.717, h: 73.519 },
   },
   {
     n: 2,
@@ -57,6 +84,12 @@ export const steps: WhyStep[] = [
     illu: { src: "/img/s2-step2.webp", x: 218, y: 287, w: 224, h: 168 },
     titleSqueeze: 0.935,
     descSize: 11.1,
+    dkIllu: { src: "/img/s2d-step2-car.webp", x: 780, y: 334, w: 516, h: 304 },
+    dkTextRight: 771.5,
+    dkTitleCy: 462.5,
+    dkDescCys: [511, 547.5],
+    dkTitleSize: 36.3,
+    dkDescSizes: [21.1, 21.3],
   },
   {
     n: 3,
@@ -64,6 +97,12 @@ export const steps: WhyStep[] = [
     titleCenterY: 525.8,
     descYs: [557.5, 580.5, 602],
     illu: { src: "/img/s2-step3.webp", x: 8, y: 474, w: 238, h: 163 },
+    dkIllu: { src: "/img/s2d-step3-podium.webp", x: 156, y: 566, w: 460, h: 272 },
+    dkTextRight: 1389.5,
+    dkTitleCy: 671.5,
+    dkDescCys: [721, 757.5],
+    dkTitleSize: 35.2,
+    dkDescSizes: [21.8, 20.1],
   },
   {
     n: 4,
@@ -73,5 +112,12 @@ export const steps: WhyStep[] = [
     illu: { src: "/img/s2-step4.webp", x: 236, y: 650, w: 213, h: 159 },
     titleSqueeze: 0.947,
     hotspot: { x: 309, y: 672, w: 58, h: 48, action: "support", aria: w.supportHotspotAria },
+    dkIllu: { src: "/img/s2d-step4-card.webp", x: 860, y: 782, w: 459, h: 230 },
+    dkTextRight: 783,
+    dkTitleCy: 863.5,
+    dkDescCys: [910.5, 947],
+    dkTitleSize: 30.8,
+    dkDescSizes: [18.5, 18.1],
+    dkHotspot: { l: 40.306, t: 4.783, w: 20.698, h: 34.348 },
   },
 ];
