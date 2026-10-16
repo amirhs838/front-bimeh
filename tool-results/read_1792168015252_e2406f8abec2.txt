@@ -1,0 +1,801 @@
+     1→@import "tailwindcss";
+     2→@import "tw-animate-css";
+     3→
+     4→@custom-variant dark (&:is(.dark *));
+     5→
+     6→@theme inline {
+     7→  --color-background: var(--background);
+     8→  --color-foreground: var(--foreground);
+     9→  --font-sans: var(--font-app), Estedad, Vazirmatn, "Segoe UI", Tahoma, sans-serif;
+    10→  --font-mono: var(--font-geist-mono);
+    11→  --color-sidebar-ring: var(--sidebar-ring);
+    12→  --color-sidebar-border: var(--sidebar-border);
+    13→  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    14→  --color-sidebar-accent: var(--sidebar-accent);
+    15→  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    16→  --color-sidebar-primary: var(--sidebar-primary);
+    17→  --color-sidebar-foreground: var(--sidebar-foreground);
+    18→  --color-sidebar: var(--sidebar);
+    19→  --color-chart-5: var(--chart-5);
+    20→  --color-chart-4: var(--chart-4);
+    21→  --color-chart-3: var(--chart-3);
+    22→  --color-chart-2: var(--chart-2);
+    23→  --color-chart-1: var(--chart-1);
+    24→  --color-ring: var(--ring);
+    25→  --color-input: var(--input);
+    26→  --color-border: var(--border);
+    27→  --color-destructive: var(--destructive);
+    28→  --color-accent-foreground: var(--accent-foreground);
+    29→  --color-accent: var(--accent);
+    30→  --color-muted-foreground: var(--muted-foreground);
+    31→  --color-muted: var(--muted);
+    32→  --color-secondary-foreground: var(--secondary-foreground);
+    33→  --color-secondary: var(--secondary);
+    34→  --color-primary-foreground: var(--primary-foreground);
+    35→  --color-primary: var(--primary);
+    36→  --color-popover-foreground: var(--popover-foreground);
+    37→  --color-popover: var(--popover);
+    38→  --color-card-foreground: var(--card-foreground);
+    39→  --color-card: var(--card);
+    40→  --radius-sm: calc(var(--radius) - 4px);
+    41→  --radius-md: calc(var(--radius) - 2px);
+    42→  --radius-lg: var(--radius);
+    43→  --radius-xl: calc(var(--radius) + 4px);
+    44→
+    45→  /* ---- Bimeh AI design tokens (sampled from reference) ---- */
+    46→  --color-brand: var(--brand);
+    47→  --color-brand-dark: var(--brand-dark);
+    48→  --color-brand-tint: var(--brand-tint);
+    49→  --color-ink: var(--ink);
+    50→  --color-ink-strong: var(--ink-strong);
+    51→  --color-ink-soft: var(--ink-soft);
+    52→  --color-sub: var(--sub);
+    53→  --color-placeholder: var(--placeholder-c);
+    54→  --color-strip: var(--strip);
+    55→  --color-pill: var(--pill);
+    56→  --color-band: var(--band);
+    57→  --color-hero-1: var(--hero-1);
+    58→  --color-hero-2: var(--hero-2);
+    59→  --color-hero-3: var(--hero-3);
+    60→  --color-s2-title: var(--s2-title);
+    61→  --color-s2-step-title: var(--s2-step-title);
+    62→  --color-s2-desc: var(--s2-desc);
+    63→}
+    64→
+    65→:root {
+    66→  /* shadcn base */
+    67→  --radius: 0.625rem;
+    68→  --background: #f0f5fa;
+    69→  --foreground: #101e30;
+    70→  --card: #ffffff;
+    71→  --card-foreground: #101e30;
+    72→  --popover: #ffffff;
+    73→  --popover-foreground: #101e30;
+    74→  --primary: #fc1b37;
+    75→  --primary-foreground: #ffffff;
+    76→  --secondary: #e4e8ee;
+    77→  --secondary-foreground: #2c3642;
+    78→  --muted: #eef3f9;
+    79→  --muted-foreground: #7fa9dc;
+    80→  --accent: #fff1f3;
+    81→  --accent-foreground: #d4122e;
+    82→  --destructive: #d4122e;
+    83→  --border: #e4e8ee;
+    84→  --input: #e4e8ee;
+    85→  --ring: #fc1b37;
+    86→  --chart-1: #fc1b37;
+    87→  --chart-2: #7fa9dc;
+    88→  --chart-3: #101e30;
+    89→  --chart-4: #f4959f;
+    90→  --chart-5: #eef3f9;
+    91→  --sidebar: #ffffff;
+    92→  --sidebar-foreground: #101e30;
+    93→  --sidebar-primary: #fc1b37;
+    94→  --sidebar-primary-foreground: #ffffff;
+    95→  --sidebar-accent: #fff1f3;
+    96→  --sidebar-accent-foreground: #d4122e;
+    97→  --sidebar-border: #e4e8ee;
+    98→  --sidebar-ring: #fc1b37;
+    99→
+   100→  /* ---- Bimeh AI palette (sampled from 1.jpg) ---- */
+   101→  --brand: #fc1b37;
+   102→  --brand-dark: #d4122e;
+   103→  --brand-tint: #fff1f3;
+   104→  --ink: #0a1725;            /* card titles */
+   105→  --ink-strong: #333941;     /* hero headline */
+   106→  --ink-soft: #0b1622;       /* bubble text */
+   107→  --sub: #6e9cd8;            /* card subtitles */
+   108→  --placeholder-c: #a5bcdb;
+   109→  --strip: #f9f2f6;
+   110→  --pill: #e4e8ee;
+   111→  --band: #f0f5fa;
+   112→  --checkbox: #4d586b;
+   113→  --hero-1: #e4eaf1;
+   114→  --hero-2: #e9eef4;
+   115→  --hero-3: #e2e7ee;
+   116→
+   117→  /* ---- Scroll 2 (sampled from 2.jpg) ---- */
+   118→  --s2-top-bg: #eef2f5; /* C2 — top edge of the Scroll 2 reference */
+   119→  --s2-bottom-bg: #e3e6eb; /* bottom wave end — Scroll 3 blends from here */
+   120→  --s2-title: #0d1420;
+   121→  --s2-step-title: #0d1119;
+   122→  --s2-desc: #929aa4;
+   123→
+   124→  /* ---- Scroll 3 (sampled from 3.jpg) ---- */
+   125→  --s3-bg: #f4f8fa;           /* base page bg of Scroll 3 (drift via gradient layer) */
+   126→  --s3-card-bg: #f8fafc;      /* feature card fill (sampled — not pure white) */
+   127→  --s3-card-title: #1b2340;   /* dark navy card titles */
+   128→  --s3-card-desc: #8797b3;    /* muted blue-gray descriptions */
+   129→  --s3-icon-tile: #faecee;    /* pale pink icon tiles */
+   130→  --s3-photo-bg: #d3d7db;     /* hero photo studio gray (loading placeholder) */
+   131→  --s3-notif-bg: rgba(62, 66, 73, 0.82);
+   132→  --s3-notif-time: #a6b6d6;
+   133→
+   134→  /* ---- Footer (sampled from 4.png, s=2.1244) ---- */
+   135→  --f-outside-bg: #f1f6f9;    /* page bg around the card (sampled at margins) */
+   136→  --f-card-bg: #f5f9fc;       /* card fill (sampled, not pure white) */
+   137→  --f-ink: #101a34;           /* headings / column titles (near-navy core) */
+   138→  --f-text: #5b6a89;          /* paragraph + labels + contact (one sampled tone) */
+   139→  --f-chevron: #5b6a89;       /* chevrons (same sampled core as labels) */
+   140→  --f-pill-bg: #f3f3f9;       /* quick-access pill fill (pale lavender, NOT pink) */
+   141→  --f-pill-icon-bg: #f7e7ee;  /* pale pink icon circle */
+   142→  --f-divider: #dfe6ef;       /* 1px divider */
+   143→  --footer-gap: 2rem;         /* Scroll 3 -> footer card gap (32u) */
+   144→
+   145→  /* ---- Scroll-1 bottom / Scroll-2 bridge color ----
+   146→     MOBILE value = the page tone the Scroll-2 bridge starts from today
+   147→     (unconsumed on mobile — zero visual effect). DESKTOP value (sampled from
+   148→     D1 y1005–1020, x20–50) is set inside the desktop media query below. */
+   149→  --s1-bottom-bg: #edf3f9;
+   150→}
+   151→
+   152→/*
+   153→ * Proportional scaling: 1rem = 16px at the 450px design frame.
+   154→ * Root font-size = 100vw / 28.125, capped at 480px-frame equivalent (17.0666px)
+   155→ * so viewports >480px keep a centered 480px column with identical proportions.
+   156→ */
+   157→html {
+   158→  font-size: min(100vw / 28.125, 17.0666px);
+   159→}
+   160→
+   161→@media (prefers-reduced-motion: no-preference) {
+   162→  html {
+   163→    scroll-behavior: smooth;
+   164→  }
+   165→}
+   166→
+   167→@layer base {
+   168→  * {
+   169→    @apply border-border outline-ring/50;
+   170→  }
+   171→  html {
+   172→    -webkit-tap-highlight-color: transparent;
+   173→  }
+   174→  body {
+   175→    background-color: var(--background);
+   176→    background-image:
+   177→      radial-gradient(40rem 20rem at 90% -10%, rgba(255, 255, 255, 0.32), transparent 62%),
+   178→      radial-gradient(36rem 18rem at 4% 30%, rgba(255, 255, 255, 0.28), transparent 65%),
+   179→      linear-gradient(180deg, #f0f5fa 0%, #eef3f9 55%, #edf3f9 100%);
+   180→    background-attachment: fixed;
+   181→    color: var(--foreground);
+   182→    font-family: var(--font-app), Estedad, Vazirmatn, "Segoe UI", Tahoma, sans-serif;
+   183→  }
+   184→  :focus-visible {
+   185→    outline: 2px solid var(--brand);
+   186→    outline-offset: 2px;
+   187→  }
+   188→}
+   189→
+   190→@layer utilities {
+   191→  .font-wordmark {
+   192→    font-family: var(--font-poppins), Poppins, sans-serif;
+   193→  }
+   194→  /* smallest copy never renders below 11px on scaled-down phones */
+   195→  .text-105 {
+   196→    font-size: max(0.65625rem, 11px);
+   197→  }
+   198→  .text-11 {
+   199→    font-size: max(0.6875rem, 11px);
+   200→  }
+   201→}
+   202→
+   203→/* --- animations --- */
+   204→@keyframes hero-float {
+   205→  0%,
+   206→  100% {
+   207→    transform: translateY(0);
+   208→  }
+   209→  50% {
+   210→    transform: translateY(-3px);
+   211→  }
+   212→}
+   213→@keyframes dot-wave {
+   214→  0%,
+   215→  100% {
+   216→    opacity: 0.28;
+   217→  }
+   218→  50% {
+   219→    opacity: 1;
+   220→  }
+   221→}
+   222→@keyframes check-pop {
+   223→  0% {
+   224→    transform: scale(0.4);
+   225→    opacity: 0;
+   226→  }
+   227→  70% {
+   228→    transform: scale(1.12);
+   229→  }
+   230→  100% {
+   231→    transform: scale(1);
+   232→    opacity: 1;
+   233→  }
+   234→}
+   235→@keyframes typing-bounce {
+   236→  0%,
+   237→  60%,
+   238→  100% {
+   239→    transform: translateY(0);
+   240→    opacity: 0.45;
+   241→  }
+   242→  30% {
+   243→    transform: translateY(-3px);
+   244→    opacity: 1;
+   245→  }
+   246→}
+   247→
+   248→.anim-hero-float {
+   249→  animation: hero-float 4s ease-in-out infinite;
+   250→}
+   251→.anim-typing-dot {
+   252→  animation: dot-wave 1.2s ease-in-out infinite;
+   253→}
+   254→
+   255→/* --- Scroll 2 --- */
+   256→@keyframes s2-glow {
+   257→  0%,
+   258→  100% {
+   259→    opacity: 0.3;
+   260→  }
+   261→  50% {
+   262→    opacity: 0.8;
+   263→  }
+   264→}
+   265→.anim-s2-glow {
+   266→  animation: s2-glow 2.4s ease-in-out infinite;
+   267→}
+   268→/* idle float for step illustrations (+-3px), staggered via animation-delay */
+   269→.anim-s2-float {
+   270→  animation: hero-float 5.6s ease-in-out infinite;
+   271→}
+   272→
+   273→/* Reveal-on-scroll: hidden state applies ONLY when JS has flagged <html class="js">,
+   274→   so the SSR/no-JS page renders everything visible. */
+   275→.js .s2-reveal:not(.is-in) {
+   276→  opacity: 0;
+   277→  transform: translateY(16px);
+   278→}
+   279→.js .s2-reveal.is-in {
+   280→  opacity: 1;
+   281→  transform: translateY(0);
+   282→  transition:
+   283→    opacity 0.5s ease-out,
+   284→    transform 0.5s ease-out;
+   285→}
+   286→.js .s2-reveal-text.is-in {
+   287→  transition-delay: 80ms;
+   288→}
+   289→/* --- Scroll 3 reveal (same no-JS-safe pattern) --- */
+   290→.js .s3-fade:not(.is-in) {
+   291→  opacity: 0;
+   292→}
+   293→.js .s3-fade.is-in {
+   294→  opacity: 1;
+   295→  transition: opacity 0.6s ease-out;
+   296→}
+   297→.js .s3-reveal:not(.is-in) {
+   298→  opacity: 0;
+   299→  transform: translateY(16px);
+   300→}
+   301→.js .s3-reveal.is-in {
+   302→  opacity: 1;
+   303→  transform: translateY(0);
+   304→  transition:
+   305→    opacity 0.5s ease-out,
+   306→    transform 0.5s ease-out;
+   307→}
+   308→/* --- Footer reveal (same no-JS-safe pattern) --- */
+   309→/* extended hit targets for footer rows (vars set inline per row) */
+   310→.f-hit::after {
+   311→  content: "";
+   312→  position: absolute;
+   313→  left: 0;
+   314→  right: 0;
+   315→  top: var(--hit-t, 0);
+   316→  bottom: var(--hit-b, 0);
+   317→}
+   318→.js .f-reveal:not(.is-in) {
+   319→  opacity: 0;
+   320→  transform: translateY(16px);
+   321→}
+   322→.js .f-reveal.is-in {
+   323→  opacity: 1;
+   324→  transform: translateY(0);
+   325→  transition:
+   326→    opacity 0.5s ease-out,
+   327→    transform 0.5s ease-out;
+   328→}
+   329→.js .f-fade:not(.is-in) {
+   330→  opacity: 0;
+   331→}
+   332→.js .f-fade.is-in {
+   333→  opacity: 1;
+   334→  transition: opacity 0.7s ease-out;
+   335→}
+   336→@media (prefers-reduced-motion: reduce) {
+   337→  .js .s2-reveal,
+   338→  .js .s3-reveal,
+   339→  .js .s3-fade,
+   340→  .js .f-reveal,
+   341→  .js .f-fade {
+   342→    opacity: 1 !important;
+   343→    transform: none !important;
+   344→    transition: none !important;
+   345→  }
+   346→}
+   347→
+   348→@media (prefers-reduced-motion: reduce) {
+   349→  *,
+   350→  *::before,
+   351→  *::after {
+   352→    animation-duration: 0.01ms !important;
+   353→    animation-iteration-count: 1 !important;
+   354→    transition-duration: 0.01ms !important;
+   355→    scroll-behavior: auto !important;
+   356→  }
+   357→}
+   358→
+   359→/* thin scrollbar for the chat message list */
+   360→.chat-scroll::-webkit-scrollbar {
+   361→  width: 4px;
+   362→}
+   363→.chat-scroll::-webkit-scrollbar-thumb {
+   364→  background: #d4dbe6;
+   365→  border-radius: 999px;
+   366→}
+   367→
+   368→/* =====================================================================
+   369→   DESKTOP >=1280 — SCROLL 1 (reference D1: "Persian Insurance Platform
+   370→   UI with Friendly Mascot.png", frame 1536 x 1024, 1d = 1px @1536)
+   371→   ---------------------------------------------------------------------
+   372→   Everything desktop lives inside this ONE media query (--bp-desktop).
+   373→   Below 1280px not a single rule here applies: the mobile site is frozen.
+   374→   Scaling: --d = min(100vw, --d-max) / 1536, so the layout is proportional
+   375→   from 1280 to 1536 and caps at 1536 beyond (content stays centered).
+   376→   ===================================================================== */
+   377→
+   378→/* desktop-only elements are outside the layout & a11y tree below the bp */
+   379→.dk-only {
+   380→  display: none;
+   381→}
+   382→
+   383→@media (min-width: 1280px) {
+   384→  /* ---------------- tokens (sampled from D1) ---------------- */
+   385→  :root {
+   386→    --bp-desktop: 1280px;
+   387→    --d-max: 1536px;
+   388→    --d: calc(min(100vw, var(--d-max)) / 1536);
+   389→    --dk-page-bg: #f6f9fd;
+   390→    --dk-header-bg: #ffffff;
+   391→    --dk-header-shadow: 0 2px 12px rgba(40, 60, 110, 0.06);
+   392→    --dk-hero-bg-1: #eaf0f9;
+   393→    --dk-hero-bg-2: #edf2fa;
+   394→    --dk-skyline: #c9d3e3;
+   395→    --dk-nav: #343a4c;
+   396→    --dk-band-bg: #eff5fd;
+   397→    --dk-strip-bg: #fdeef4;
+   398→    --s1-bottom-bg: #f9fbfd; /* D1 bottom (y1005-1020, x20-50) */
+   399→  }
+   400→
+   401→  html,
+   402→  body {
+   403→    overflow-x: clip;
+   404→  }
+   405→  /* continuous page background: Scroll 1 paints its own top-to-bottom
+   406→     gradient; below it the body stays at --s1-bottom-bg so the seam into
+   407→     the (mobile-column) Scroll 2 is invisible */
+   408→  body {
+   409→    background-image: none;
+   410→    background-color: var(--s1-bottom-bg);
+   411→    background-attachment: scroll;
+   412→  }
+   413→
+   414→  /* ---------------- Scroll 1 root ---------------- */
+   415→  .s1-root {
+   416→    padding-bottom: calc(113 * var(--d)); /* 40d tail + 49d bar + 24d bottom */
+   417→    background: linear-gradient(180deg, #f6f9fd 0%, #f8fbfd 55%, var(--s1-bottom-bg) 100%);
+   418→  }
+   419→  .s1-root > div {
+   420→    padding-left: calc(60 * var(--d));
+   421→    padding-right: calc(60 * var(--d));
+   422→  }
+   423→
+   424→  /* ---------------- HEADER (full-bleed white bar, y0-70) ---------------- */
+   425→  .dk-header {
+   426→    background: var(--dk-header-bg);
+   427→    box-shadow: var(--dk-header-shadow);
+   428→  }
+   429→  .dk-header[data-scrolled] {
+   430→    background: rgba(255, 255, 255, 0.8);
+   431→    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.65), 0 10px 26px -16px rgba(70, 90, 140, 0.25);
+   432→  }
+   433→  .dk-header > div {
+   434→    height: calc(70 * var(--d));
+   435→    max-width: calc(1536 * var(--d));
+   436→    padding-left: calc(76 * var(--d));
+   437→    padding-right: calc(73 * var(--d));
+   438→  }
+   439→  .dk-logo {
+   440→    width: calc(46 * var(--d));
+   441→    height: calc(46 * var(--d));
+   442→  }
+   443→  .dk-header .font-wordmark {
+   444→    font-size: calc(28 * var(--d)) !important;
+   445→  }
+   446→  .dk-header > div > a {
+   447→    gap: calc(18 * var(--d)) !important;
+   448→  }
+   449→  /* right group: visual LTR order = nav, headset, pill, burger (pill/headset
+   450→     are swapped vs mobile — CSS order only, DOM untouched) */
+   451→  .dk-right {
+   452→    gap: calc(18 * var(--d));
+   453→  }
+   454→  .dk-nav {
+   455→    order: 0;
+   456→    display: flex;
+   457→    align-items: center;
+   458→    /* D1 reads right-to-left: خانه is the rightmost link (next to the headset) */
+   459→    direction: rtl;
+   460→    gap: calc(28 * var(--d));
+   461→    margin-right: calc(18 * var(--d));
+   462→  }
+   463→  .dk-nav-link {
+   464→    font-size: max(calc(14 * var(--d)), 12px);
+   465→    font-weight: 500;
+   466→    line-height: 1.5;
+   467→  }
+   468→  .dk-headset { order: 1; }
+   469→  .dk-pill {
+   470→    order: 2;
+   471→    height: calc(36 * var(--d));
+   472→    padding: 0 calc(13.5 * var(--d)) !important;
+   473→    font-size: max(calc(15 * var(--d)), 12px) !important;
+   474→  }
+   475→  .dk-burger {
+   476→    order: 3;
+   477→    margin-left: calc(7 * var(--d));
+   478→  }
+   479→  .dk-headset svg {
+   480→    width: calc(32 * var(--d));
+   481→    height: calc(34 * var(--d));
+   482→  }
+   483→  .dk-burger svg {
+   484→    width: calc(20 * var(--d));
+   485→    height: calc(16 * var(--d));
+   486→  }
+   487→
+   488→  /* ---------------- HERO CARD (x60-1476, y91-363) ---------------- */
+   489→  .dk-hero-card {
+   490→    margin-top: calc(21 * var(--d)); /* header bottom y70 -> hero top y91 */
+   491→    height: calc(272 * var(--d)) !important;
+   492→    max-width: none;
+   493→    border-radius: calc(16 * var(--d)) !important;
+   494→    background:
+   495→      linear-gradient(112deg, transparent 24%, rgba(255, 255, 255, 0.18) 38%, rgba(255, 255, 255, 0.04) 50%, transparent 58%),
+   496→      radial-gradient(60% 90% at 68% 0%, rgba(255, 255, 255, 0.30), transparent 60%),
+   497→      linear-gradient(180deg, transparent 74%, rgba(255, 255, 255, 0.42) 88%, rgba(255, 255, 255, 0.22) 100%),
+   498→      linear-gradient(180deg, var(--dk-hero-bg-1) 0%, #ebf1fa 55%, var(--dk-hero-bg-2) 100%) !important;
+   499→    box-shadow: 0 2px 14px rgba(70, 90, 140, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+   500→  }
+   501→  .dk-hero-card .dk-only {
+   502→    display: block;
+   503→    opacity: 0.8;
+   504→  }
+   505→  /* mascot: x960-1175, y103-357 (hero-local 900,12, 215x254) */
+   506→  .hero-mascot {
+   507→    left: calc(900 * var(--d)) !important;
+   508→    top: calc(12 * var(--d)) !important;
+   509→    width: calc(215 * var(--d)) !important;
+   510→    height: calc(254 * var(--d)) !important;
+   511→  }
+   512→  /* headline: bbox x277-647, center y~180 (hero-local right 829, top 89) */
+   513→  .hero-headline {
+   514→    right: calc(829 * var(--d)) !important;
+   515→    top: calc(89 * var(--d)) !important;
+   516→    font-size: calc(53 * var(--d)) !important;
+   517→  }
+   518→  /* chat group */
+   519→  .hero-bubble {
+   520→    left: calc(334 * var(--d)) !important;
+   521→    top: calc(140 * var(--d)) !important;
+   522→    width: calc(244 * var(--d)) !important;
+   523→    height: calc(75 * var(--d)) !important;
+   524→    border-radius: calc(22 * var(--d)) !important;
+   525→  }
+   526→  .hero-bubble > span {
+   527→    padding: calc(9 * var(--d)) calc(23 * var(--d)) calc(7 * var(--d)) calc(14 * var(--d)) !important;
+   528→  }
+   529→  .hero-bubble-text {
+   530→    font-size: calc(20 * var(--d)) !important;
+   531→    line-height: 1.45 !important;
+   532→  }
+   533→  .hero-bubble-tail {
+   534→    left: calc(-13 * var(--d)) !important;
+   535→    top: calc(28 * var(--d)) !important;
+   536→    width: calc(19 * var(--d));
+   537→    height: calc(21 * var(--d));
+   538→  }
+   539→  .hero-avatar {
+   540→    left: calc(237 * var(--d)) !important;
+   541→    top: calc(140 * var(--d)) !important;
+   542→    width: calc(75 * var(--d)) !important;
+   543→    height: calc(74 * var(--d)) !important;
+   544→    border-radius: calc(18 * var(--d)) !important;
+   545→  }
+   546→  .hero-avatar-logo {
+   547→    width: calc(48 * var(--d)) !important;
+   548→    height: calc(48 * var(--d)) !important;
+   549→  }
+   550→  .hero-typing {
+   551→    left: calc(344 * var(--d)) !important;
+   552→    top: calc(222 * var(--d)) !important;
+   553→    width: calc(71 * var(--d)) !important;
+   554→    height: calc(34 * var(--d)) !important;
+   555→    border-radius: calc(17 * var(--d)) !important;
+   556→  }
+   557→  .hero-typing-dots {
+   558→    left: 50% !important;
+   559→    top: 50% !important;
+   560→    transform: translate(-50%, -50%);
+   561→    gap: calc(8 * var(--d)) !important;
+   562→  }
+   563→  .hero-typing-dot {
+   564→    width: calc(9 * var(--d)) !important;
+   565→    height: calc(9 * var(--d)) !important;
+   566→  }
+   567→  /* D1 typing dots: light / dark / light (mobile: descending) */
+   568→  .hero-typing-dot:nth-child(1) { opacity: 0.5 !important; }
+   569→  .hero-typing-dot:nth-child(2) { opacity: 1 !important; }
+   570→  .hero-typing-dot:nth-child(3) { opacity: 0.5 !important; }
+   571→
+   572→  /* ---------------- PRODUCT GRID (x62-1475) ---------------- */
+   573→  .pg-root {
+   574→    display: grid !important;
+   575→    flex-direction: initial;
+   576→    max-width: none;
+   577→    margin-top: 0;
+   578→    /* D1 grid areas are authored in PHYSICAL (LTR) coordinates — the page is
+   579→       RTL, so flip the grid flow only; card interiors re-set dir=rtl */
+   580→    direction: ltr;
+   581→    grid-template-columns:
+   582→      calc(465 * var(--d)) calc(219 * var(--d)) calc(220 * var(--d))
+   583→      calc(464 * var(--d));
+   584→    grid-template-rows:
+   585→      calc(203 * var(--d)) calc(18 * var(--d)) calc(162 * var(--d))
+   586→      calc(12 * var(--d)) calc(150 * var(--d));
+   587→    column-gap: calc(14 * var(--d));
+   588→    /* hero bottom 363 -> row 1 top 386 */
+   589→    margin-top: calc(23 * var(--d));
+   590→  }
+   591→  .pg-row {
+   592→    display: contents;
+   593→  }
+   594→  .pg-row > * {
+   595→    margin-top: 0 !important; /* mobile per-row gaps die with display:contents */
+   596→  }
+   597→  .pc-card {
+   598→    grid-area: var(--dk-area);
+   599→    height: 100% !important;
+   600→    border-radius: calc(14 * var(--d));
+   601→    /* D1 cards are near-opaque white glass */
+   602→    background: rgba(255, 255, 255, 0.8) !important;
+   603→    border-color: rgba(255, 255, 255, 0.95) !important;
+   604→  }
+   605→  .pc-card[data-checked] {
+   606→    background: rgba(255, 241, 243, 0.9) !important;
+   607→    border-color: var(--brand) !important;
+   608→  }
+   609→  .pc-card:hover {
+   610→    transform: translateY(calc(-2 * var(--d)));
+   611→    box-shadow: 0 14px 30px -10px rgba(70, 90, 140, 0.22);
+   612→  }
+   613→  /* mobile raster band -> desktop CSS band + line-art SVG */
+   614→  .pc-band-img {
+   615→    display: none;
+   616→  }
+   617→  .pc-dk-band {
+   618→    display: flex;
+   619→    position: absolute;
+   620→    align-items: flex-end;
+   621→    justify-content: center;
+   622→    left: calc(var(--dk-band-l) * var(--d));
+   623→    right: calc(var(--dk-band-r) * var(--d));
+   624→    top: calc(var(--dk-band-t) * var(--d));
+   625→    height: calc(var(--dk-band-h) * var(--d));
+   626→    border-radius: calc(9 * var(--d));
+   627→    background: var(--dk-band-bg);
+   628→  }
+   629→  .pc-dk-illu {
+   630→    width: calc(var(--dk-illu-w) * var(--d));
+   631→    height: calc(var(--dk-illu-h) * var(--d));
+   632→    /* per-card D1 content offset ("بدنه" sits ~14d left of center) */
+   633→    transform: translateX(calc(var(--dk-cx, 0) * var(--d)));
+   634→  }
+   635→  /* checkbox corner tab + checkbox (50x44d tab, 18d box) */
+   636→  .pc-tab {
+   637→    width: calc(50 * var(--d)) !important;
+   638→    height: calc(44 * var(--d)) !important;
+   639→    border-radius: calc(14 * var(--d)) 0 calc(10 * var(--d)) 0 !important;
+   640→  }
+   641→  .pc-check-hit {
+   642→    left: calc(5.5 * var(--d)) !important;
+   643→    top: calc(1.5 * var(--d)) !important;
+   644→    padding: calc(13 * var(--d)) !important;
+   645→  }
+   646→  .pc-check-hit::after {
+   647→    content: "";
+   648→    position: absolute;
+   649→    left: 50%;
+   650→    top: 50%;
+   651→    width: max(calc(44 * var(--d)), 44px);
+   652→    height: max(calc(44 * var(--d)), 44px);
+   653→    transform: translate(-50%, -50%);
+   654→  }
+   655→  .pc-checkbox {
+   656→    width: calc(18 * var(--d)) !important;
+   657→    height: calc(18 * var(--d)) !important;
+   658→    border-width: max(calc(2 * var(--d)), 1.5px) !important;
+   659→    border-radius: calc(4 * var(--d)) !important;
+   660→  }
+   661→  .pc-check {
+   662→    left: calc(13 * var(--d)) !important;
+   663→    top: calc(13 * var(--d)) !important;
+   664→    width: calc(18 * var(--d)) !important;
+   665→    height: calc(18 * var(--d)) !important;
+   666→  }
+   667→  /* installment badge (per-card boxes from dkProducts) */
+   668→  .pc-badge {
+   669→    top: calc(var(--dk-badge-t) * var(--d)) !important;
+   670→    right: calc(var(--dk-badge-r) * var(--d)) !important;
+   671→    width: calc(var(--dk-badge-w) * var(--d)) !important;
+   672→    height: calc(var(--dk-badge-h) * var(--d)) !important;
+   673→    padding: 0 !important;
+   674→    font-size: max(calc(var(--dk-badge-fs) * var(--d)), 11px) !important;
+   675→  }
+   676→  /* title + subtitle (per-card centers; --dk-cx carries the D1 "بدنه" offset) */
+   677→  .pc-title {
+   678→    top: calc(var(--dk-title-t) * var(--d)) !important;
+   679→    font-size: max(calc(var(--dk-title-fs) * var(--d)), 11px) !important;
+   680→    font-weight: 800 !important;
+   681→    transform: translateX(calc(var(--dk-cx, 0) * var(--d))) !important;
+   682→  }
+   683→  .pc-sub {
+   684→    top: calc(var(--dk-sub-t) * var(--d)) !important;
+   685→    font-size: max(calc(var(--dk-sub-fs) * var(--d)), 11px) !important;
+   686→    transform: translateX(calc(var(--dk-cx, 0) * var(--d))) !important;
+   687→  }
+   688→  /* info strip (full cards) */
+   689→  .pc-strip {
+   690→    left: calc(14 * var(--d)) !important;
+   691→    right: calc(14 * var(--d)) !important;
+   692→    top: calc(var(--dk-strip-t) * var(--d)) !important;
+   693→    bottom: auto !important;
+   694→    height: calc(var(--dk-strip-h) * var(--d)) !important;
+   695→    border-radius: calc(7 * var(--d)) !important;
+   696→    font-size: max(calc(var(--dk-strip-fs) * var(--d)), 11px) !important;
+   697→  }
+   698→  .pc-strip-text {
+   699→    transform: translateX(calc(var(--dk-cx, 0) * var(--d))) !important;
+   700→  }
+   701→  /* D1 has no installment badge on بیمه تکمیلی (mobile data disagrees) —
+   702→     the desktop presentation follows D1 (reported in the deliverable) */
+   703→  .pc-card[data-slug="supplementary"] .pc-badge {
+   704→    display: none;
+   705→  }
+   706→
+   707→  /* ---------------- CHAT BAR (fixed, y951-1000) ---------------- */
+   708→  .dk-chatbar {
+   709→    width: calc(1412 * var(--d)) !important;
+   710→    max-width: none !important;
+   711→    height: calc(49 * var(--d)) !important;
+   712→    margin: 0 0 calc(24 * var(--d)) !important;
+   713→    border-radius: calc(14 * var(--d)) !important;
+   714→  }
+   715→  .dk-chatbar-input {
+   716→    left: calc(10 * var(--d)) !important;
+   717→    right: calc(64 * var(--d)) !important;
+   718→    width: auto !important;
+   719→    height: calc(40 * var(--d)) !important;
+   720→    border-radius: calc(12 * var(--d)) !important;
+   721→    font-size: max(calc(16.5 * var(--d)), 11px) !important;
+   722→    padding-right: calc(20 * var(--d)) !important;
+   723→    padding-left: calc(58 * var(--d)) !important;
+   724→    background: rgba(255, 252, 253, 0.72) !important;
+   725→  }
+   726→  .dk-chatbar-sparkles {
+   727→    left: calc(17 * var(--d)) !important;
+   728→    width: calc(29 * var(--d)) !important;
+   729→    height: calc(28 * var(--d)) !important;
+   730→  }
+   731→  .dk-chatbar-send {
+   732→    right: calc(8 * var(--d)) !important;
+   733→    top: calc(4.5 * var(--d)) !important;
+   734→    width: calc(44 * var(--d)) !important;
+   735→    height: calc(40 * var(--d)) !important;
+   736→    border-radius: calc(9 * var(--d)) !important;
+   737→  }
+   738→  .dk-chatbar-dots {
+   739→    width: calc(20 * var(--d)) !important;
+   740→    height: calc(19 * var(--d)) !important;
+   741→  }
+   742→  /* floating continue CTA — centered, 14d above the bar top edge */
+   743→  .dk-select {
+   744→    width: calc(1412 * var(--d)) !important;
+   745→    max-width: none !important;
+   746→    margin-bottom: calc(87 * var(--d)) !important;
+   747→    border-radius: calc(14 * var(--d)) !important;
+   748→    padding-top: calc(12 * var(--d)) !important;
+   749→    padding-bottom: calc(12 * var(--d)) !important;
+   750→    font-size: max(calc(15 * var(--d)), 11px) !important;
+   751→  }
+   752→
+   753→  /* ---------------- DRAWER (380d right panel) ---------------- */
+   754→  .dk-drawer {
+   755→    width: calc(380 * var(--d)) !important;
+   756→    max-width: none !important;
+   757→  }
+   758→
+   759→  /* ---------------- SHEETS -> centered dialogs ---------------- */
+   760→  .dk-chat,
+   761→  .dk-support {
+   762→    top: 0 !important;
+   763→    bottom: 0 !important;
+   764→    left: 0 !important;
+   765→    right: 0 !important;
+   766→    margin: auto !important;
+   767→    height: fit-content !important;
+   768→    border-radius: calc(18 * var(--d)) !important;
+   769→    overflow: hidden;
+   770→    box-shadow: 0 24px 60px -16px rgba(40, 60, 110, 0.35);
+   771→  }
+   772→  .dk-chat {
+   773→    width: calc(480 * var(--d)) !important;
+   774→    max-width: none !important;
+   775→    max-height: calc(100vh - 48px);
+   776→    height: min(calc(620 * var(--d)), calc(100vh - 48px)) !important;
+   777→  }
+   778→  .dk-support {
+   779→    width: calc(440 * var(--d)) !important;
+   780→    max-width: none !important;
+   781→  }
+   782→  /* centered dialogs fade/scale instead of sliding (avoids transform clash) */
+   783→  @keyframes dk-dialog-in {
+   784→    from { opacity: 0; transform: scale(0.96); }
+   785→    to { opacity: 1; transform: scale(1); }
+   786→  }
+   787→  @keyframes dk-dialog-out {
+   788→    from { opacity: 1; transform: scale(1); }
+   789→    to { opacity: 0; transform: scale(0.96); }
+   790→  }
+   791→  .dk-chat[data-state="open"],
+   792→  .dk-support[data-state="open"] {
+   793→    animation: dk-dialog-in 0.22s ease-out !important;
+   794→  }
+   795→  .dk-chat[data-state="closed"],
+   796→  .dk-support[data-state="closed"] {
+   797→    animation: dk-dialog-out 0.18s ease-in !important;
+   798→  }
+   799→}
+   800→/* ===================== END DESKTOP >=1280 ===================== */
+   801→
