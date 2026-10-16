@@ -59,7 +59,7 @@ export function ProductCard({
     "--dk-band-h": dk.band.height,
     "--dk-illu-w": dk.illu.w,
     "--dk-illu-h": dk.illu.h,
-    "--dk-title-t": dk.titleCenter - dk.titleSize * 0.62,
+    "--dk-title-t": dk.titleCenter - dk.titleSize * 0.62 + 2,
     "--dk-title-fs": dk.titleSize,
     "--dk-sub-t": dk.subCenter - dk.subSize * 0.62,
     "--dk-sub-fs": dk.subSize,

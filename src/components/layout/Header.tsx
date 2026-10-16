@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { Wordmark, Burger, Headset } from "@/components/icons";
+import { Wordmark, Burger, Headset, HeadsetDk } from "@/components/icons";
 import { content } from "@/data/content";
 import { site } from "@/data/site";
 import { useUI } from "@/lib/ui-store";
@@ -127,7 +127,10 @@ export function Header() {
             aria-label={content.header.supportAria}
             className="dk-headset rounded-[0.5rem] p-[0.125rem] text-[#14161d] transition-opacity hover:opacity-75"
           >
-            <Headset className="h-[1.47rem] w-[1.40625rem]" />
+            {/* mobile keeps the original glyph; desktop swaps to D1's variant
+                (.m-only is display:none >=1280, .dk-only below it) */}
+            <Headset className="m-only h-[1.47rem] w-[1.40625rem]" />
+            <HeadsetDk className="dk-only h-[1.47rem] w-[1.40625rem]" />
           </button>
           <button
             type="button"

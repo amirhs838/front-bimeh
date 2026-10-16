@@ -23,11 +23,13 @@ export const site = {
     { label: "تماس با ما", href: "/contact" },
     { label: "ثبت نام", href: "/register" },
   ],
-  /** DESKTOP (>=1280) header nav (reference D1) — right-to-left visual order. */
+  /** DESKTOP (>=1280) header nav (reference D1) — right-to-left visual order.
+   *  "خریدارها" has no dedicated route yet → /quote (instalment purchase);
+   *  flagged in the deliverable for the IA owner. */
   desktopNav: [
     { label: "خانه", href: "/" },
     { label: "بیمه‌ها", href: "/#products" },
-    { label: "درباره ما", href: "/about" },
+    { label: "خریدارها", href: "/quote" },
     { label: "تماس با ما", href: "/contact" },
   ],
   /** Footer contact (rendered physically LTR: [icon] [text] [chevron]).

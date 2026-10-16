@@ -113,6 +113,33 @@ export function Headset(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+/**
+ * DESKTOP (>=1280) support headset — D1's variant: big rounded-rect earcups,
+ * thick band, mic boom curving from the right cup to a filled mic dot at the
+ * bottom center. Mobile keeps the original <Headset> (Mobile Freeze Protocol).
+ */
+export function HeadsetDk(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 25" fill="none" aria-hidden {...props}>
+      <path
+        d="M3.2 15.5v-4.1a8.8 8.8 0 0 1 17.6 0v4.1"
+        stroke="currentColor"
+        strokeWidth="3.1"
+        strokeLinecap="round"
+      />
+      <rect x="1.6" y="12.6" width="6" height="8.6" rx="2.6" fill="currentColor" />
+      <rect x="16.4" y="12.6" width="6" height="8.6" rx="2.6" fill="currentColor" />
+      <path
+        d="M19.4 21.2v.4a3 3 0 0 1-3 3h-3.6"
+        stroke="currentColor"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+      />
+      <circle cx="11.2" cy="23.2" r="1.5" fill="currentColor" />
+    </svg>
+  );
+}
+
 /** Red AI sparkles: one large + one small 4-point star. */
 export function Sparkles(props: SVGProps<SVGSVGElement>) {
   const star = (cx: number, cy: number, r: number) =>

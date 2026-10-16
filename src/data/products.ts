@@ -144,7 +144,7 @@ export const dkProducts: Record<string, DkProduct> = {
     titleCenter: 111, titleSize: 21.4,
     subCenter: 138, subSize: 14.6,
     badge: { top: 15, right: 16, w: 97, h: 21, font: 12.5 },
-    strip: { top: 158, height: 33, font: 13.5 },
+    strip: { top: 159, height: 34, font: 13.5 },
   },
   body: {
     area: "1 / 3 / 2 / 5",
@@ -154,7 +154,7 @@ export const dkProducts: Record<string, DkProduct> = {
     titleCenter: 111, titleSize: 19.2,
     subCenter: 138, subSize: 12.1,
     badge: { top: 15, right: 16, w: 97, h: 21, font: 12.5 },
-    strip: { top: 158, height: 33, font: 13.5 },
+    strip: { top: 159, height: 34, font: 13.5 },
     cx: -14, // D1 renders this card's content ~14d left of the card center
   },
   motorcycle: {

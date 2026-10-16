@@ -58,4 +58,4 @@ server.log
 /upload/
 /db/
 /.zscripts/
-mini-services/
+mini-services/tool-results/

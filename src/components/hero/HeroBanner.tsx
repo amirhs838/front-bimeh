@@ -14,9 +14,9 @@ import { HeroDecorDesktop } from "./HeroDecorDesktop";
  * globals.css (hook classes: dk-hero-card / hero-mascot / hero-headline /
  * hero-bubble / hero-avatar / hero-typing). Differences:
  *  - a desktop-only traced skyline+clouds decor (HeroDecorDesktop, .dk-only)
- *  - the mascot uses a higher-res source via <picture> + media source
- *    (mobile keeps the exact current asset; desktop preload is media-scoped
- *    so each breakpoint downloads only its own file).
+ *  - the mascot uses the exact D1 render (color-keyed, 2x) via <picture> +
+ *    media source (mobile keeps the exact current asset; desktop preload is
+ *    media-scoped so each breakpoint downloads only its own file).
  */
 export function HeroBanner() {
   const openChat = useUI((s) => s.openChat);
@@ -54,7 +54,7 @@ export function HeroBanner() {
         <HeroDecorDesktop className="dk-only absolute inset-0 h-full w-full" />
 
         {/* desktop-only high-res mascot preload (media-scoped; mobile ignores it) */}
-        <link rel="preload" as="image" href="/img/mascot-desktop.png" media="(min-width:1280px)" fetchPriority="high" />
+        <link rel="preload" as="image" href="/img/mascot-d1.png" media="(min-width:1280px)" fetchPriority="high" />
 
         {/* mascot — <picture> swaps in the 2x desktop asset at >=1280px */}
         <button
@@ -65,7 +65,7 @@ export function HeroBanner() {
           style={{ left: px(232.5), top: px(17.5), width: px(140), height: px(169) }}
         >
           <picture>
-            <source media="(min-width:1280px)" srcSet="/img/mascot-desktop.png" width={460} height={556} />
+            <source media="(min-width:1280px)" srcSet="/img/mascot-d1.png" width={534} height={522} />
             <img
               {...mobileMascot.props}
               alt={content.hero.mascotAlt}
@@ -139,14 +139,9 @@ export function HeroBanner() {
             boxShadow: "0 4px 12px rgba(90,105,135,0.12)",
           }}
         >
-          {/* mascot-face logo, faded (same soft-pink treatment as before) */}
-          <Image
-            src="/img/logo-face-soft.png"
-            alt=""
-            width={52}
-            height={52}
-            priority
-            aria-hidden
+          {/* mascot-face logo: mobile keeps the soft variant; desktop swaps to
+              the full-colour logo at 0.62 opacity (= D1's washed tile) */}
+          <picture
             className="hero-avatar-logo absolute"
             style={{
               left: "50%",
@@ -155,7 +150,18 @@ export function HeroBanner() {
               width: px(26),
               height: px(26),
             }}
-          />
+          >
+            <source media="(min-width:1280px)" srcSet="/img/logo-face.png" width={104} height={104} />
+            <Image
+              src="/img/logo-face-soft.png"
+              alt=""
+              width={52}
+              height={52}
+              priority
+              aria-hidden
+              className="h-full w-full"
+            />
+          </picture>
         </button>
 
         {/* typing indicator pill */}

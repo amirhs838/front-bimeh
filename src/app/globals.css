@@ -419,6 +419,10 @@ html {
   .s1-root > div {
     padding-left: calc(60 * var(--d));
     padding-right: calc(60 * var(--d));
+    /* >1536: content column caps at 1536d and centers; header stays full-bleed */
+    max-width: calc(1536 * var(--d));
+    margin-left: auto;
+    margin-right: auto;
   }
 
   /* ---------------- HEADER (full-bleed white bar, y0-70) ---------------- */
@@ -442,9 +446,14 @@ html {
   }
   .dk-header .font-wordmark {
     font-size: calc(28 * var(--d)) !important;
+    /* wordmark ink sits 1.5d lower than the tile relative to it */
+    position: relative;
+    top: calc(1.5 * var(--d));
   }
   .dk-header > div > a {
     gap: calc(18 * var(--d)) !important;
+    /* D1 logo tile ink starts y14 (not 12) — drop the whole brand group */
+    margin-top: calc(2.5 * var(--d));
   }
   /* right group: visual LTR order = nav, headset, pill, burger (pill/headset
      are swapped vs mobile — CSS order only, DOM untouched) */
@@ -457,8 +466,8 @@ html {
     align-items: center;
     /* D1 reads right-to-left: خانه is the rightmost link (next to the headset) */
     direction: rtl;
-    gap: calc(28 * var(--d));
-    margin-right: calc(18 * var(--d));
+    gap: calc(24 * var(--d));
+    margin-right: calc(14 * var(--d));
   }
   .dk-nav-link {
     font-size: max(calc(14 * var(--d)), 12px);
@@ -466,9 +475,16 @@ html {
     line-height: 1.5;
   }
   .dk-headset { order: 1; }
+  /* mobile glyph is hidden on desktop (HeadsetDk replaces it) */
+  .dk-headset .m-only {
+    display: none;
+  }
+  .dk-headset .dk-only {
+    display: block;
+  }
   .dk-pill {
     order: 2;
-    height: calc(36 * var(--d));
+    height: calc(34 * var(--d));
     padding: 0 calc(13.5 * var(--d)) !important;
     font-size: max(calc(15 * var(--d)), 12px) !important;
   }
@@ -502,18 +518,19 @@ html {
     display: block;
     opacity: 0.8;
   }
-  /* mascot: x960-1175, y103-357 (hero-local 900,12, 215x254) */
+  /* mascot: exact D1 render — asset canvas 267x261d at frame (943,99) →
+     hero-local (883, 8); keyed ink lands on the reference ink 1:1 */
   .hero-mascot {
-    left: calc(900 * var(--d)) !important;
-    top: calc(12 * var(--d)) !important;
-    width: calc(215 * var(--d)) !important;
-    height: calc(254 * var(--d)) !important;
+    left: calc(883 * var(--d)) !important;
+    top: calc(8 * var(--d)) !important;
+    width: calc(267 * var(--d)) !important;
+    height: calc(261 * var(--d)) !important;
   }
-  /* headline: bbox x277-647, center y~180 (hero-local right 829, top 89) */
+  /* headline: bbox x278-646, ink y156-209 (hero-local right 827, top 91.5) */
   .hero-headline {
-    right: calc(829 * var(--d)) !important;
-    top: calc(89 * var(--d)) !important;
-    font-size: calc(53 * var(--d)) !important;
+    right: calc(827 * var(--d)) !important;
+    top: calc(91.5 * var(--d)) !important;
+    font-size: calc(52.2 * var(--d)) !important;
   }
   /* chat group */
   .hero-bubble {
@@ -524,11 +541,11 @@ html {
     border-radius: calc(22 * var(--d)) !important;
   }
   .hero-bubble > span {
-    padding: calc(9 * var(--d)) calc(23 * var(--d)) calc(7 * var(--d)) calc(14 * var(--d)) !important;
+    padding: calc(5 * var(--d)) calc(27 * var(--d)) calc(7 * var(--d)) calc(14 * var(--d)) !important;
   }
   .hero-bubble-text {
-    font-size: calc(20 * var(--d)) !important;
-    line-height: 1.45 !important;
+    font-size: calc(20.3 * var(--d)) !important;
+    line-height: 1.52 !important;
   }
   .hero-bubble-tail {
     left: calc(-13 * var(--d)) !important;
@@ -546,6 +563,9 @@ html {
   .hero-avatar-logo {
     width: calc(48 * var(--d)) !important;
     height: calc(48 * var(--d)) !important;
+    /* D1 avatar = full-colour logo washed on the white tile (G-channel
+       match: 48·α + 255·(1-α) = 113 → α ≈ 0.69) */
+    opacity: 0.69;
   }
   .hero-typing {
     left: calc(344 * var(--d)) !important;
@@ -575,6 +595,9 @@ html {
     flex-direction: initial;
     max-width: none;
     margin-top: 0;
+    /* D1 card field spans x63-1473 (hero is 60/61) → +3d inside the 60d padding */
+    margin-left: calc(3 * var(--d));
+    margin-right: calc(3 * var(--d));
     /* D1 grid areas are authored in PHYSICAL (LTR) coordinates — the page is
        RTL, so flip the grid flow only; card interiors re-set dir=rtl */
     direction: ltr;
@@ -706,11 +729,14 @@ html {
 
   /* ---------------- CHAT BAR (fixed, y951-1000) ---------------- */
   .dk-chatbar {
-    width: calc(1412 * var(--d)) !important;
+    width: calc(1409 * var(--d)) !important;
     max-width: none !important;
     height: calc(49 * var(--d)) !important;
     margin: 0 0 calc(24 * var(--d)) !important;
     border-radius: calc(14 * var(--d)) !important;
+    /* D1 bar is a warm white (253,250,251) over the cool page */
+    background: rgba(255, 248, 250, 0.8) !important;
+    border-color: rgba(255, 255, 255, 0.9) !important;
   }
   .dk-chatbar-input {
     left: calc(10 * var(--d)) !important;
@@ -718,19 +744,24 @@ html {
     width: auto !important;
     height: calc(40 * var(--d)) !important;
     border-radius: calc(12 * var(--d)) !important;
-    font-size: max(calc(16.5 * var(--d)), 11px) !important;
-    padding-right: calc(20 * var(--d)) !important;
+    font-size: max(calc(16.6 * var(--d)), 11px) !important;
+    padding-right: calc(25 * var(--d)) !important;
     padding-left: calc(58 * var(--d)) !important;
-    background: rgba(255, 252, 253, 0.72) !important;
+    /* D1 bar is one uniform warm surface — no lighter inner pill */
+    background: rgba(255, 250, 250, 0.35) !important;
+  }
+  .dk-chatbar-input::placeholder {
+    color: #a6b4c8 !important;
   }
   .dk-chatbar-sparkles {
-    left: calc(17 * var(--d)) !important;
-    width: calc(29 * var(--d)) !important;
+    left: calc(15 * var(--d)) !important;
+    top: calc(50% - 2 * var(--d)) !important;
+    width: calc(30 * var(--d)) !important;
     height: calc(28 * var(--d)) !important;
   }
   .dk-chatbar-send {
     right: calc(8 * var(--d)) !important;
-    top: calc(4.5 * var(--d)) !important;
+    top: calc(4 * var(--d)) !important;
     width: calc(44 * var(--d)) !important;
     height: calc(40 * var(--d)) !important;
     border-radius: calc(9 * var(--d)) !important;
@@ -741,7 +772,7 @@ html {
   }
   /* floating continue CTA — centered, 14d above the bar top edge */
   .dk-select {
-    width: calc(1412 * var(--d)) !important;
+    width: calc(1409 * var(--d)) !important;
     max-width: none !important;
     margin-bottom: calc(87 * var(--d)) !important;
     border-radius: calc(14 * var(--d)) !important;
