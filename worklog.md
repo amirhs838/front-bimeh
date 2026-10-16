@@ -372,3 +372,27 @@ Work Log:
 
 Stage Summary:
 - Site LIVE and PUBLIC at https://front-bimeh.vercel.app; repo synced; golden path verified on production.
+
+---
+Task ID: desktop-s2
+Agent: main (Z.ai Code)
+Task: DESKTOP SCROLL 2 ("چرا Bimeh AI") — pixel-perfect D2 build (1536x1024) with Mobile Freeze Protocol; push GitHub + deploy Vercel
+
+Work Log:
+- Recon: D2 (upload/"Bimeh AI Smart Insurance Features.png", 1536x1024) sampled: bg = HORIZONTAL profile (corners ~#EEF2F5, center ~#F8FAFC, constant down the section — NOT a radial bloom), title ink x564-972 y49-126, per-step per-line ink bboxes measured (d2_lines.py/d2_measure2.py — the prompt's ±3d estimates confirmed; s1 L1/L2 567/571 not 570/570 etc).
+- Assets: 4 desktop illustrations cropped from D2 with ink-bbox-derived boxes (image wins over prompt ±8d): s1 (147,100,463,321), s2 (780,334,516,304), s3 (156,566,460,272), s4 (860,782,459,230, decor-curve sliver erased, 6d/8d feather top/bottom) — feathered alpha ≥16d on quiet edges, 2x lanczos, webp. Initial lossless 951KB → q92 lossy 150KB (D2 diff unchanged 3.363%, art regions ≤422px).
+- Scroll2.tsx: hook classes (s2-m-decor/wave/curve, s2-img-m, s2-desc-m, s2-title/-fa, s2-text, s2-illu, s2-hotspot) added without mobile effect; DecorDesktop (inline SVG, viewport-anchored: 2 left + 1 right pale discs fitted from D2, 2 red curves traced from D2 incl. dot-to-top exit at x225, dots r3.4+glow pulsing 2.4s offset 1.2s) with seam mask fades (48d discs, 16d left-curve top, 24d right-curve bottom); <picture> media-gated desktop art (no cross-download, verified in waterfall); 2-line desktop <p> (display:none <1280); hotspots repositioned via % vars (phone (312,122,170,236)->ChatSheet, headset (1045,793,95,79)->SupportSheet, hit ≥44px).
+- data: steps.ts dk fields (dkIllu/dkTextRight/dkTitleCy/dkDescCys/dkTitleSize/dkDescSizes per-line/dkHotspot %); content.ts linesDesktop (parity test tests/s2d-copy.mjs 4/4 after ZWNJ+ws normalization).
+- globals.css (inside the existing >=1280 MQ only): --s2-bottom-bg #f5f8fa + dk2 tokens; .s2-root 1024d + H(x) profile + flat 249 bridge fading over 120d (D1 bottom is FLAT 249, D2 top row is profiled — Δ11 at corners is below pixelmatch threshold and develops at 0.09/row); Scroll1 padding-bottom 113d->40d (§3A); S2→S3 bridge overridden CSS-only (#scroll-3 > div[aria-hidden]:first-child): H(x) row 0 -> flat #f4f8fa by 200d; title/steps/hotspot geometry via CSS vars + !important over inline styles.
+- Calibration loop (verify-s2d.ts + d2_measure2.py, identical windows/threshold on D2 and shot): 5 iterations -> all 12 lines within ±1.5d width, ±1d cy, right edges exact (found + fixed: Turbopack stale CSS chunk after var rename --dkd->--dkd1; lazy display:none imgs never complete -> visible-img wait).
+- FINAL D2 pixelmatch 3.363% @1536 DPR1: art ≈ 0 (5/1/48/422px), decor+discs ≈ 0-821px, TEXT = 97% of residual (glyph shapes, reference font unavailable — same accepted class as approved mobile sections at 4.02-5.01%). DPR2 pass sharp.
+- Seams (tests/seam-s2d.mjs, junction-zone row metric): S1→S2 0.54/255, S2→S3 1.84/255 at 1536 AND 1920 (≤2 PASS); visual stitches clean.
+- Suite tests/verify-s2d-suite.mjs 20/20: responsive 1280-2560 (overflow 0, container centered, decor viewport-anchored, art proportional), boundary 1279(mobile 933px)/1280(desktop 853px=1024d), DPR2, hotspots->sheets, drawer link, header auto-hide, reduced-motion, keyboard focus, network waterfall (desktop: only s2d-*; mobile: only s2-step*).
+- e2e regression: 44+16+18+39 = 117/117 PASS. Copy parity 4/4. tsc clean (pre-existing unrelated errors only), lint clean, zero console/page errors, hydration OK.
+- MOBILE FREEZE: goldens re-verified before (3px=0.000% at N=5) and after (10 widths 360-1279 N=5: 0-1060px, all mascot/s2-step webp-edge noise ≤0.018% vs documented ≤0.021% class, structural 0); interim element regression (tests/interim2.mjs before/after 1280/1536/1920): S1 band 0 structural, S3 = sanctioned top-74px bridge zone only, Footer = subpixel AA (page fraction shift 933.33u->1024d), s2top -73 exactly as designed.
+- Lighthouse (production): mobile Perf 79 / A11y 96 / CLS 0 (paired run vs previous deploy 76/96/0 — NO regression; first-run 68 was cold variance; pre-existing asset weight: logo-face.png 237KB, LCP 5.0s); desktop Perf 92-98 across runs / A11y 96 / CLS 0 (LCP 1.8s, TBT 10ms). s2d q92 re-encode shipped to improve it.
+- Pushed a3c946b + perf commit to origin/main; deployed to Vercel prod (front-bimeh.vercel.app 200); agent-browser golden path on prod: desktop S2 render + phone hotspot -> ChatSheet "open" ✓.
+
+Stage Summary:
+- Desktop Scroll 2 live at >=1280 (proportional 1280-1536, capped beyond), pixel-verified vs D2 (3.363%, art/decor ~0, text-glyph residual class), seams ≤2/255, interactions verified, mobile frozen (structural 0), deployed to https://front-bimeh.vercel.app.
+- Assumptions/deviations reported: decor anchored to viewport edges; mask fades per §3A; S1 profile develops over 120d inside S2 (D1 rows <950 untouched); --s2-bottom-bg desktop = #f5f8fa (sampled) with bridge base using H(x) edge tone (the sampled point includes the bloom); hidden duplicate descriptions via display:none; per-line desc sizes replicate D2 (s3 L2 20.1 vs L1 21.8; s4 visibly smaller); retina: art is 2x-upscaled from a 1x reference (softness at DPR2 inherent to source).
