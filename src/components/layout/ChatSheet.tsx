@@ -90,6 +90,7 @@ export function ChatSheet() {
       <SheetPortal>
         <SheetContent
           className="
+            dk-chat
             inset-x-0 bottom-0 top-0 mx-auto flex h-[100dvh] max-w-[28.125rem] flex-col !rounded-none bg-[#f3f6fb]
             data-[state=open]:slide-in-from-bottom-full data-[state=closed]:slide-out-to-bottom-full
             data-[state=open]:duration-300 data-[state=closed]:duration-200

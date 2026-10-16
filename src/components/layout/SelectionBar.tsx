@@ -24,6 +24,7 @@ export function SelectionBar() {
         tabIndex={visible ? 0 : -1}
         onClick={() => router.push(`/quote?items=${items.join(",")}`)}
         className="
+          dk-select
           pointer-events-auto mb-[calc(4.3125rem+env(safe-area-inset-bottom))] w-[calc(100%-2.375rem)] max-w-[25.75rem]
           rounded-[0.875rem] bg-brand py-3 text-[0.9375rem] font-bold text-white shadow-[0_14px_30px_-10px_rgba(252,27,55,0.55)]
           transition-all duration-200 active:scale-[0.98]

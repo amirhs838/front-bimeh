@@ -25,6 +25,7 @@ export function SupportSheet() {
       <SheetPortal>
         <SheetContent
           className="
+            dk-support
             inset-x-0 bottom-0 mx-auto max-w-[28.125rem] rounded-t-[1.25rem] px-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-4
             data-[state=open]:slide-in-from-bottom-full data-[state=closed]:slide-out-to-bottom-full
             data-[state=open]:duration-300 data-[state=closed]:duration-200

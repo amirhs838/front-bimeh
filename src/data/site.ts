@@ -23,6 +23,13 @@ export const site = {
     { label: "تماس با ما", href: "/contact" },
     { label: "ثبت نام", href: "/register" },
   ],
+  /** DESKTOP (>=1280) header nav (reference D1) — right-to-left visual order. */
+  desktopNav: [
+    { label: "خانه", href: "/" },
+    { label: "بیمه‌ها", href: "/#products" },
+    { label: "درباره ما", href: "/about" },
+    { label: "تماس با ما", href: "/contact" },
+  ],
   /** Footer contact (rendered physically LTR: [icon] [text] [chevron]).
    *  Values are PLACEHOLDERS replicating the reference image. */
   footerContact: {

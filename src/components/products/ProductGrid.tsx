@@ -14,14 +14,18 @@ const ROW_GAPS = [5.5, 6, 9, 9, 7]; // gap above each row (row 1 gap is to the h
 export function ProductGrid() {
   return (
     <div id="products" className="pl-[1.1875rem] pr-[1.21875rem]">
-      <div className="mx-auto flex max-w-[28.125rem] flex-col">
+      <div
+        dir="ltr"
+        className="pg-root mx-auto flex max-w-[28.125rem] flex-col"
+      >
         {rows.map((row, i) => (
           <div
             key={i}
+            dir="rtl"
             className={
               row.kind === "half"
-                ? "grid grid-cols-[12.53125rem_12.78125rem] gap-x-[0.40625rem]"
-                : "block"
+                ? "pg-row grid grid-cols-[12.53125rem_12.78125rem] gap-x-[0.40625rem]"
+                : "pg-row block"
             }
             style={{ marginTop: px(ROW_GAPS[i]), height: px(row.height) }}
           >

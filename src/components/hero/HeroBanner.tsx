@@ -1,18 +1,40 @@
 "use client";
 
 import Image from "next/image";
+import { getImageProps } from "next/image";
 import { content } from "@/data/content";
 import { useUI } from "@/lib/ui-store";
 import { px } from "@/lib/format";
+import { HeroDecorDesktop } from "./HeroDecorDesktop";
 
-/** Hero card: studio-gradient backdrop, 3D mascot, headline, chat bubble, avatar, typing dots. */
+/**
+ * Hero card: studio-gradient backdrop, 3D mascot, headline, chat bubble, avatar, typing dots.
+ *
+ * DESKTOP (>=1280): the same DOM is re-geometry'd via the @media block in
+ * globals.css (hook classes: dk-hero-card / hero-mascot / hero-headline /
+ * hero-bubble / hero-avatar / hero-typing). Differences:
+ *  - a desktop-only traced skyline+clouds decor (HeroDecorDesktop, .dk-only)
+ *  - the mascot uses a higher-res source via <picture> + media source
+ *    (mobile keeps the exact current asset; desktop preload is media-scoped
+ *    so each breakpoint downloads only its own file).
+ */
 export function HeroBanner() {
   const openChat = useUI((s) => s.openChat);
+
+  // mobile mascot <img> props (unchanged asset/attributes)
+  const mobileMascot = getImageProps({
+    src: "/img/mascot.webp",
+    alt: content.hero.mascotAlt,
+    width: 280,
+    height: 338,
+    priority: true,
+    fetchPriority: "high",
+  });
 
   return (
     <div className="pl-[1.1875rem] pr-[1.21875rem]">
       <div
-        className="relative mx-auto h-[12.03125rem] max-w-[28.125rem] overflow-hidden rounded-[1rem]"
+        className="dk-hero-card relative mx-auto h-[12.03125rem] max-w-[28.125rem] overflow-hidden rounded-[1rem]"
         style={{
           background: [
             // diagonal light beam across the wall
@@ -28,28 +50,33 @@ export function HeroBanner() {
           boxShadow: "0 2px 14px rgba(70,90,140,0.08), inset 0 1px 0 rgba(255,255,255,0.65)",
         }}
       >
-        {/* mascot */}
+        {/* DESKTOP-only skyline + clouds (display:none below 1280px) */}
+        <HeroDecorDesktop className="dk-only absolute inset-0 h-full w-full" />
+
+        {/* desktop-only high-res mascot preload (media-scoped; mobile ignores it) */}
+        <link rel="preload" as="image" href="/img/mascot-desktop.png" media="(min-width:1280px)" fetchPriority="high" />
+
+        {/* mascot — <picture> swaps in the 2x desktop asset at >=1280px */}
         <button
           type="button"
           onClick={() => openChat()}
           aria-label={content.hero.mascotAria}
-          className="anim-hero-float absolute cursor-pointer"
+          className="hero-mascot anim-hero-float absolute cursor-pointer"
           style={{ left: px(232.5), top: px(17.5), width: px(140), height: px(169) }}
         >
-          <Image
-            src="/img/mascot.webp"
-            alt={content.hero.mascotAlt}
-            width={280}
-            height={338}
-            priority
-            fetchPriority="high"
-            className="h-full w-full object-contain"
-          />
+          <picture>
+            <source media="(min-width:1280px)" srcSet="/img/mascot-desktop.png" width={460} height={556} />
+            <img
+              {...mobileMascot.props}
+              alt={content.hero.mascotAlt}
+              className="h-full w-full object-contain"
+            />
+          </picture>
         </button>
 
         {/* headline */}
         <h1
-          className="absolute whitespace-nowrap font-black leading-none text-ink-strong"
+          className="hero-headline absolute whitespace-nowrap font-black leading-none text-ink-strong"
           style={{ right: px(190.5), top: px(86), transform: "translateY(-50%)", fontSize: px(26.2) }}
         >
           {content.hero.headline}
@@ -60,7 +87,7 @@ export function HeroBanner() {
           type="button"
           onClick={() => openChat()}
           aria-label={content.hero.bubbleAria}
-          className="absolute cursor-pointer text-right"
+          className="hero-bubble absolute cursor-pointer text-right"
           style={{
             left: px(105),
             top: px(113),
@@ -76,7 +103,7 @@ export function HeroBanner() {
             style={{ padding: `${px(5)} ${px(11.5)} ${px(4)} ${px(7)}` }}
           >
             <span
-              className="w-full text-right font-medium leading-[1.75] text-ink-soft"
+              className="hero-bubble-text w-full text-right font-medium leading-[1.75] text-ink-soft"
               style={{ fontSize: px(9) }}
             >
               {content.hero.bubble}
@@ -85,7 +112,7 @@ export function HeroBanner() {
           {/* tail pointing at the avatar */}
           <svg
             aria-hidden
-            className="absolute"
+            className="hero-bubble-tail absolute"
             style={{ left: px(-5.5), top: px(26) }}
             width="8"
             height="9"
@@ -101,7 +128,7 @@ export function HeroBanner() {
           type="button"
           onClick={() => openChat()}
           aria-label={content.hero.bubbleAria}
-          className="absolute cursor-pointer"
+          className="hero-avatar absolute cursor-pointer"
           style={{
             left: px(56),
             top: px(116),
@@ -120,7 +147,7 @@ export function HeroBanner() {
             height={52}
             priority
             aria-hidden
-            className="absolute"
+            className="hero-avatar-logo absolute"
             style={{
               left: "50%",
               top: "50%",
@@ -134,7 +161,7 @@ export function HeroBanner() {
         {/* typing indicator pill */}
         <div
           aria-label={content.hero.typingAria}
-          className="absolute flex items-center justify-center"
+          className="hero-typing absolute flex items-center justify-center"
           style={{
             left: px(117),
             top: px(162),
@@ -145,11 +172,11 @@ export function HeroBanner() {
             boxShadow: "0 3px 10px rgba(90,105,135,0.10)",
           }}
         >
-          <div dir="ltr" className="absolute left-[0.46875rem] flex" style={{ gap: px(4), top: px(6.5) }}>
+          <div dir="ltr" className="hero-typing-dots absolute left-[0.46875rem] flex" style={{ gap: px(4), top: px(6.5) }}>
             {[1, 0.58, 0.32].map((base, i) => (
               <span
                 key={i}
-                className="anim-typing-dot rounded-full bg-[#7e8590]"
+                className="hero-typing-dot anim-typing-dot rounded-full bg-[#7e8590]"
                 style={{ width: px(5.5), height: px(5.5), opacity: base, animationDelay: `${i * 0.16}s` }}
               />
             ))}

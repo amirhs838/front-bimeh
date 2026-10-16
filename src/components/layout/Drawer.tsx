@@ -26,6 +26,7 @@ export function Drawer() {
         <SheetContent
           aria-label={content.drawer.title}
           className="
+            dk-drawer
             inset-y-0 right-0 flex w-[min(80%,20rem)] flex-col overflow-y-auto rounded-l-[1.25rem]
             px-6 pb-8 pt-5 shadow-[-16px_0_40px_-20px_rgba(60,80,120,0.35)]
             data-[state=open]:slide-in-from-right data-[state=closed]:slide-out-to-right

@@ -141,6 +141,12 @@
   --f-pill-icon-bg: #f7e7ee;  /* pale pink icon circle */
   --f-divider: #dfe6ef;       /* 1px divider */
   --footer-gap: 2rem;         /* Scroll 3 -> footer card gap (32u) */
+
+  /* ---- Scroll-1 bottom / Scroll-2 bridge color ----
+     MOBILE value = the page tone the Scroll-2 bridge starts from today
+     (unconsumed on mobile — zero visual effect). DESKTOP value (sampled from
+     D1 y1005–1020, x20–50) is set inside the desktop media query below. */
+  --s1-bottom-bg: #edf3f9;
 }
 
 /*
@@ -358,3 +364,437 @@ html {
   background: #d4dbe6;
   border-radius: 999px;
 }
+
+/* =====================================================================
+   DESKTOP >=1280 — SCROLL 1 (reference D1: "Persian Insurance Platform
+   UI with Friendly Mascot.png", frame 1536 x 1024, 1d = 1px @1536)
+   ---------------------------------------------------------------------
+   Everything desktop lives inside this ONE media query (--bp-desktop).
+   Below 1280px not a single rule here applies: the mobile site is frozen.
+   Scaling: --d = min(100vw, --d-max) / 1536, so the layout is proportional
+   from 1280 to 1536 and caps at 1536 beyond (content stays centered).
+   ===================================================================== */
+
+/* desktop-only elements are outside the layout & a11y tree below the bp */
+.dk-only {
+  display: none;
+}
+
+@media (min-width: 1280px) {
+  /* ---------------- tokens (sampled from D1) ---------------- */
+  :root {
+    --bp-desktop: 1280px;
+    --d-max: 1536px;
+    --d: calc(min(100vw, var(--d-max)) / 1536);
+    --dk-page-bg: #f6f9fd;
+    --dk-header-bg: #ffffff;
+    --dk-header-shadow: 0 2px 12px rgba(40, 60, 110, 0.06);
+    --dk-hero-bg-1: #eaf0f9;
+    --dk-hero-bg-2: #edf2fa;
+    --dk-skyline: #c9d3e3;
+    --dk-nav: #343a4c;
+    --dk-band-bg: #eff5fd;
+    --dk-strip-bg: #fdeef4;
+    --s1-bottom-bg: #f9fbfd; /* D1 bottom (y1005-1020, x20-50) */
+  }
+
+  html,
+  body {
+    overflow-x: clip;
+  }
+  /* continuous page background: Scroll 1 paints its own top-to-bottom
+     gradient; below it the body stays at --s1-bottom-bg so the seam into
+     the (mobile-column) Scroll 2 is invisible */
+  body {
+    background-image: none;
+    background-color: var(--s1-bottom-bg);
+    background-attachment: scroll;
+  }
+
+  /* ---------------- Scroll 1 root ---------------- */
+  .s1-root {
+    padding-bottom: calc(113 * var(--d)); /* 40d tail + 49d bar + 24d bottom */
+    background: linear-gradient(180deg, #f6f9fd 0%, #f8fbfd 55%, var(--s1-bottom-bg) 100%);
+  }
+  .s1-root > div {
+    padding-left: calc(60 * var(--d));
+    padding-right: calc(60 * var(--d));
+  }
+
+  /* ---------------- HEADER (full-bleed white bar, y0-70) ---------------- */
+  .dk-header {
+    background: var(--dk-header-bg);
+    box-shadow: var(--dk-header-shadow);
+  }
+  .dk-header[data-scrolled] {
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.65), 0 10px 26px -16px rgba(70, 90, 140, 0.25);
+  }
+  .dk-header > div {
+    height: calc(70 * var(--d));
+    max-width: calc(1536 * var(--d));
+    padding-left: calc(76 * var(--d));
+    padding-right: calc(73 * var(--d));
+  }
+  .dk-logo {
+    width: calc(46 * var(--d));
+    height: calc(46 * var(--d));
+  }
+  .dk-header .font-wordmark {
+    font-size: calc(28 * var(--d)) !important;
+  }
+  .dk-header > div > a {
+    gap: calc(18 * var(--d)) !important;
+  }
+  /* right group: visual LTR order = nav, headset, pill, burger (pill/headset
+     are swapped vs mobile — CSS order only, DOM untouched) */
+  .dk-right {
+    gap: calc(18 * var(--d));
+  }
+  .dk-nav {
+    order: 0;
+    display: flex;
+    align-items: center;
+    /* D1 reads right-to-left: خانه is the rightmost link (next to the headset) */
+    direction: rtl;
+    gap: calc(28 * var(--d));
+    margin-right: calc(18 * var(--d));
+  }
+  .dk-nav-link {
+    font-size: max(calc(14 * var(--d)), 12px);
+    font-weight: 500;
+    line-height: 1.5;
+  }
+  .dk-headset { order: 1; }
+  .dk-pill {
+    order: 2;
+    height: calc(36 * var(--d));
+    padding: 0 calc(13.5 * var(--d)) !important;
+    font-size: max(calc(15 * var(--d)), 12px) !important;
+  }
+  .dk-burger {
+    order: 3;
+    margin-left: calc(7 * var(--d));
+  }
+  .dk-headset svg {
+    width: calc(32 * var(--d));
+    height: calc(34 * var(--d));
+  }
+  .dk-burger svg {
+    width: calc(20 * var(--d));
+    height: calc(16 * var(--d));
+  }
+
+  /* ---------------- HERO CARD (x60-1476, y91-363) ---------------- */
+  .dk-hero-card {
+    margin-top: calc(21 * var(--d)); /* header bottom y70 -> hero top y91 */
+    height: calc(272 * var(--d)) !important;
+    max-width: none;
+    border-radius: calc(16 * var(--d)) !important;
+    background:
+      linear-gradient(112deg, transparent 24%, rgba(255, 255, 255, 0.18) 38%, rgba(255, 255, 255, 0.04) 50%, transparent 58%),
+      radial-gradient(60% 90% at 68% 0%, rgba(255, 255, 255, 0.30), transparent 60%),
+      linear-gradient(180deg, transparent 74%, rgba(255, 255, 255, 0.42) 88%, rgba(255, 255, 255, 0.22) 100%),
+      linear-gradient(180deg, var(--dk-hero-bg-1) 0%, #ebf1fa 55%, var(--dk-hero-bg-2) 100%) !important;
+    box-shadow: 0 2px 14px rgba(70, 90, 140, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+  }
+  .dk-hero-card .dk-only {
+    display: block;
+    opacity: 0.8;
+  }
+  /* mascot: x960-1175, y103-357 (hero-local 900,12, 215x254) */
+  .hero-mascot {
+    left: calc(900 * var(--d)) !important;
+    top: calc(12 * var(--d)) !important;
+    width: calc(215 * var(--d)) !important;
+    height: calc(254 * var(--d)) !important;
+  }
+  /* headline: bbox x277-647, center y~180 (hero-local right 829, top 89) */
+  .hero-headline {
+    right: calc(829 * var(--d)) !important;
+    top: calc(89 * var(--d)) !important;
+    font-size: calc(53 * var(--d)) !important;
+  }
+  /* chat group */
+  .hero-bubble {
+    left: calc(334 * var(--d)) !important;
+    top: calc(140 * var(--d)) !important;
+    width: calc(244 * var(--d)) !important;
+    height: calc(75 * var(--d)) !important;
+    border-radius: calc(22 * var(--d)) !important;
+  }
+  .hero-bubble > span {
+    padding: calc(9 * var(--d)) calc(23 * var(--d)) calc(7 * var(--d)) calc(14 * var(--d)) !important;
+  }
+  .hero-bubble-text {
+    font-size: calc(20 * var(--d)) !important;
+    line-height: 1.45 !important;
+  }
+  .hero-bubble-tail {
+    left: calc(-13 * var(--d)) !important;
+    top: calc(28 * var(--d)) !important;
+    width: calc(19 * var(--d));
+    height: calc(21 * var(--d));
+  }
+  .hero-avatar {
+    left: calc(237 * var(--d)) !important;
+    top: calc(140 * var(--d)) !important;
+    width: calc(75 * var(--d)) !important;
+    height: calc(74 * var(--d)) !important;
+    border-radius: calc(18 * var(--d)) !important;
+  }
+  .hero-avatar-logo {
+    width: calc(48 * var(--d)) !important;
+    height: calc(48 * var(--d)) !important;
+  }
+  .hero-typing {
+    left: calc(344 * var(--d)) !important;
+    top: calc(222 * var(--d)) !important;
+    width: calc(71 * var(--d)) !important;
+    height: calc(34 * var(--d)) !important;
+    border-radius: calc(17 * var(--d)) !important;
+  }
+  .hero-typing-dots {
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%);
+    gap: calc(8 * var(--d)) !important;
+  }
+  .hero-typing-dot {
+    width: calc(9 * var(--d)) !important;
+    height: calc(9 * var(--d)) !important;
+  }
+  /* D1 typing dots: light / dark / light (mobile: descending) */
+  .hero-typing-dot:nth-child(1) { opacity: 0.5 !important; }
+  .hero-typing-dot:nth-child(2) { opacity: 1 !important; }
+  .hero-typing-dot:nth-child(3) { opacity: 0.5 !important; }
+
+  /* ---------------- PRODUCT GRID (x62-1475) ---------------- */
+  .pg-root {
+    display: grid !important;
+    flex-direction: initial;
+    max-width: none;
+    margin-top: 0;
+    /* D1 grid areas are authored in PHYSICAL (LTR) coordinates — the page is
+       RTL, so flip the grid flow only; card interiors re-set dir=rtl */
+    direction: ltr;
+    grid-template-columns:
+      calc(465 * var(--d)) calc(219 * var(--d)) calc(220 * var(--d))
+      calc(464 * var(--d));
+    grid-template-rows:
+      calc(203 * var(--d)) calc(18 * var(--d)) calc(162 * var(--d))
+      calc(12 * var(--d)) calc(150 * var(--d));
+    column-gap: calc(14 * var(--d));
+    /* hero bottom 363 -> row 1 top 386 */
+    margin-top: calc(23 * var(--d));
+  }
+  .pg-row {
+    display: contents;
+  }
+  .pg-row > * {
+    margin-top: 0 !important; /* mobile per-row gaps die with display:contents */
+  }
+  .pc-card {
+    grid-area: var(--dk-area);
+    height: 100% !important;
+    border-radius: calc(14 * var(--d));
+    /* D1 cards are near-opaque white glass */
+    background: rgba(255, 255, 255, 0.8) !important;
+    border-color: rgba(255, 255, 255, 0.95) !important;
+  }
+  .pc-card[data-checked] {
+    background: rgba(255, 241, 243, 0.9) !important;
+    border-color: var(--brand) !important;
+  }
+  .pc-card:hover {
+    transform: translateY(calc(-2 * var(--d)));
+    box-shadow: 0 14px 30px -10px rgba(70, 90, 140, 0.22);
+  }
+  /* mobile raster band -> desktop CSS band + line-art SVG */
+  .pc-band-img {
+    display: none;
+  }
+  .pc-dk-band {
+    display: flex;
+    position: absolute;
+    align-items: flex-end;
+    justify-content: center;
+    left: calc(var(--dk-band-l) * var(--d));
+    right: calc(var(--dk-band-r) * var(--d));
+    top: calc(var(--dk-band-t) * var(--d));
+    height: calc(var(--dk-band-h) * var(--d));
+    border-radius: calc(9 * var(--d));
+    background: var(--dk-band-bg);
+  }
+  .pc-dk-illu {
+    width: calc(var(--dk-illu-w) * var(--d));
+    height: calc(var(--dk-illu-h) * var(--d));
+    /* per-card D1 content offset ("بدنه" sits ~14d left of center) */
+    transform: translateX(calc(var(--dk-cx, 0) * var(--d)));
+  }
+  /* checkbox corner tab + checkbox (50x44d tab, 18d box) */
+  .pc-tab {
+    width: calc(50 * var(--d)) !important;
+    height: calc(44 * var(--d)) !important;
+    border-radius: calc(14 * var(--d)) 0 calc(10 * var(--d)) 0 !important;
+  }
+  .pc-check-hit {
+    left: calc(5.5 * var(--d)) !important;
+    top: calc(1.5 * var(--d)) !important;
+    padding: calc(13 * var(--d)) !important;
+  }
+  .pc-check-hit::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(calc(44 * var(--d)), 44px);
+    height: max(calc(44 * var(--d)), 44px);
+    transform: translate(-50%, -50%);
+  }
+  .pc-checkbox {
+    width: calc(18 * var(--d)) !important;
+    height: calc(18 * var(--d)) !important;
+    border-width: max(calc(2 * var(--d)), 1.5px) !important;
+    border-radius: calc(4 * var(--d)) !important;
+  }
+  .pc-check {
+    left: calc(13 * var(--d)) !important;
+    top: calc(13 * var(--d)) !important;
+    width: calc(18 * var(--d)) !important;
+    height: calc(18 * var(--d)) !important;
+  }
+  /* installment badge (per-card boxes from dkProducts) */
+  .pc-badge {
+    top: calc(var(--dk-badge-t) * var(--d)) !important;
+    right: calc(var(--dk-badge-r) * var(--d)) !important;
+    width: calc(var(--dk-badge-w) * var(--d)) !important;
+    height: calc(var(--dk-badge-h) * var(--d)) !important;
+    padding: 0 !important;
+    font-size: max(calc(var(--dk-badge-fs) * var(--d)), 11px) !important;
+  }
+  /* title + subtitle (per-card centers; --dk-cx carries the D1 "بدنه" offset) */
+  .pc-title {
+    top: calc(var(--dk-title-t) * var(--d)) !important;
+    font-size: max(calc(var(--dk-title-fs) * var(--d)), 11px) !important;
+    font-weight: 800 !important;
+    transform: translateX(calc(var(--dk-cx, 0) * var(--d))) !important;
+  }
+  .pc-sub {
+    top: calc(var(--dk-sub-t) * var(--d)) !important;
+    font-size: max(calc(var(--dk-sub-fs) * var(--d)), 11px) !important;
+    transform: translateX(calc(var(--dk-cx, 0) * var(--d))) !important;
+  }
+  /* info strip (full cards) */
+  .pc-strip {
+    left: calc(14 * var(--d)) !important;
+    right: calc(14 * var(--d)) !important;
+    top: calc(var(--dk-strip-t) * var(--d)) !important;
+    bottom: auto !important;
+    height: calc(var(--dk-strip-h) * var(--d)) !important;
+    border-radius: calc(7 * var(--d)) !important;
+    font-size: max(calc(var(--dk-strip-fs) * var(--d)), 11px) !important;
+  }
+  .pc-strip-text {
+    transform: translateX(calc(var(--dk-cx, 0) * var(--d))) !important;
+  }
+  /* D1 has no installment badge on بیمه تکمیلی (mobile data disagrees) —
+     the desktop presentation follows D1 (reported in the deliverable) */
+  .pc-card[data-slug="supplementary"] .pc-badge {
+    display: none;
+  }
+
+  /* ---------------- CHAT BAR (fixed, y951-1000) ---------------- */
+  .dk-chatbar {
+    width: calc(1412 * var(--d)) !important;
+    max-width: none !important;
+    height: calc(49 * var(--d)) !important;
+    margin: 0 0 calc(24 * var(--d)) !important;
+    border-radius: calc(14 * var(--d)) !important;
+  }
+  .dk-chatbar-input {
+    left: calc(10 * var(--d)) !important;
+    right: calc(64 * var(--d)) !important;
+    width: auto !important;
+    height: calc(40 * var(--d)) !important;
+    border-radius: calc(12 * var(--d)) !important;
+    font-size: max(calc(16.5 * var(--d)), 11px) !important;
+    padding-right: calc(20 * var(--d)) !important;
+    padding-left: calc(58 * var(--d)) !important;
+    background: rgba(255, 252, 253, 0.72) !important;
+  }
+  .dk-chatbar-sparkles {
+    left: calc(17 * var(--d)) !important;
+    width: calc(29 * var(--d)) !important;
+    height: calc(28 * var(--d)) !important;
+  }
+  .dk-chatbar-send {
+    right: calc(8 * var(--d)) !important;
+    top: calc(4.5 * var(--d)) !important;
+    width: calc(44 * var(--d)) !important;
+    height: calc(40 * var(--d)) !important;
+    border-radius: calc(9 * var(--d)) !important;
+  }
+  .dk-chatbar-dots {
+    width: calc(20 * var(--d)) !important;
+    height: calc(19 * var(--d)) !important;
+  }
+  /* floating continue CTA — centered, 14d above the bar top edge */
+  .dk-select {
+    width: calc(1412 * var(--d)) !important;
+    max-width: none !important;
+    margin-bottom: calc(87 * var(--d)) !important;
+    border-radius: calc(14 * var(--d)) !important;
+    padding-top: calc(12 * var(--d)) !important;
+    padding-bottom: calc(12 * var(--d)) !important;
+    font-size: max(calc(15 * var(--d)), 11px) !important;
+  }
+
+  /* ---------------- DRAWER (380d right panel) ---------------- */
+  .dk-drawer {
+    width: calc(380 * var(--d)) !important;
+    max-width: none !important;
+  }
+
+  /* ---------------- SHEETS -> centered dialogs ---------------- */
+  .dk-chat,
+  .dk-support {
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin: auto !important;
+    height: fit-content !important;
+    border-radius: calc(18 * var(--d)) !important;
+    overflow: hidden;
+    box-shadow: 0 24px 60px -16px rgba(40, 60, 110, 0.35);
+  }
+  .dk-chat {
+    width: calc(480 * var(--d)) !important;
+    max-width: none !important;
+    max-height: calc(100vh - 48px);
+    height: min(calc(620 * var(--d)), calc(100vh - 48px)) !important;
+  }
+  .dk-support {
+    width: calc(440 * var(--d)) !important;
+    max-width: none !important;
+  }
+  /* centered dialogs fade/scale instead of sliding (avoids transform clash) */
+  @keyframes dk-dialog-in {
+    from { opacity: 0; transform: scale(0.96); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes dk-dialog-out {
+    from { opacity: 1; transform: scale(1); }
+    to { opacity: 0; transform: scale(0.96); }
+  }
+  .dk-chat[data-state="open"],
+  .dk-support[data-state="open"] {
+    animation: dk-dialog-in 0.22s ease-out !important;
+  }
+  .dk-chat[data-state="closed"],
+  .dk-support[data-state="closed"] {
+    animation: dk-dialog-out 0.18s ease-in !important;
+  }
+}
+/* ===================== END DESKTOP >=1280 ===================== */
