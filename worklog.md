@@ -335,3 +335,25 @@ Work Log:
 
 Stage Summary:
 - Single-source fix: LogoTile component now renders the header PNG, so chat/drawer/register/favicon all match the header logo exactly
+
+---
+Task ID: desktop-s1
+Agent: main (Z.ai Code)
+Task: DESKTOP SCROLL 1 — pixel-perfect build from D1 ("Persian Insurance Platform UI with Friendly Mascot.png", 1536x1024) with Mobile Freeze Protocol
+
+Work Log:
+- Found the desktop implementation largely present from the compacted session (commit 8702153: desktop CSS block, dk assets, HeroDecorDesktop, dk-illus, tests). This session ran the full verification loop and drove calibration to the D1 frame.
+- Rebuilt the mascot as an EXACT D1 crop: the shipped mascot-desktop.png was the mobile render rescaled (aspect 0.825 vs D1's ~0.89 — different pose proportions). u2net/isnet dropped the white gloves; used a custom neutral/red-vs-bluish-bg color key + closing/1px erosion + 0.6px feather + 2x lanczos/sharpen → public/img/mascot-d1.png (267x261d canvas at frame (943,99)). Red-body IoU vs D1: 0.994; earlier "x1206 ink" readings were the skyline building behind the mascot, not the mascot.
+- Header: D1 nav label is خریدارها (was درباره ما) — swapped, href /quote (IA flagged); HeadsetDk (big rounded cups + filled mic dot) added for desktop via .m-only/.dk-only swap (mobile glyph untouched); logo group +2.5d, wordmark +1.5d, pill h34d; nav gap 28→24d, margin-right 18→14d → nav ink (1012-1252) vs ref (1011-1252).
+- Hero: headline 53→52.2d, right 829→827d, top 89→91.5d; bubble text 20→20.3d, lh 1.45→1.52, padding 9/23→5/27; avatar = full logo-face.png at opacity .69 on desktop (G-channel match 48α+255(1-α)=113), mobile keeps approved soft PNG (picture swap).
+- Grid: +3d centering (card field x63-1473 vs ref 63/1472), title calc +2d, strips 159/34d.
+- Chat bar: uniform warm surface (253,250,251) — removed the lighter inner input pill; placeholder #a6b4c8, font 16.6d, padding-right 25d (ink 1199-1381 vs ref 1196-1381); sparkle 30d at left 15d; width 1409d; dk-select matched.
+- Wide desktop (>1536): .s1-root > div capped at 1536d + centered (hero was stretching to 1800px at 1920 — fixed); header stays full-bleed; verified 1280/1366/1440/1536/1728/1920 → zero overflow, exact expected boxes.
+- TOOLCHAIN: freshly-installed Playwright Chromium (headless shell 156, v1248) rasterizes WebP images nondeterministically (bimodal decode/raster cache race, ±0.17% run-to-run on identical code). Fix: tests/median-capture.mjs — per-pixel MEDIAN of 5 runs is deterministic (median(1-3) vs median(3-5) = 0px). Mobile goldens re-baselined as median-of-5 at 360-1279.
+- VERIFICATION: D1 pixelmatch 3.814% → 3.019% (accepted residual class: reference font unavailable — glyph shapes, image AA; same class as approved mobile sections at 4-5%); ALL structural ink bboxes within ±3px (mascot IoU 0.994); Mobile Freeze: structural ZERO (residual ≤0.021% confined to webp edges: mascot hero + s2/s3 illustrations; text/box/geometry = 0px); e2e 44 + s2 16 + s3 18 + f 39 = 117/117 PASS (fixed HeadsetDk invalid SVG transform translateY → cy=23.2); seam S1→S2 at 1536 invisible; agent-browser golden path at 1536x1024: checkboxes → CTA bar → sessionStorage persistence across reload (3 checked), drawer 380d, chat + support as CENTERED dialogs, nav خریدارها → /quote, header auto-hide/glass, zero console errors; lint clean; dev.log 200s only.
+- Commits: 8702153 (earlier desktop build) + e4dc944 amended → pushed e49f49d to origin/main (with re-baselined median goldens + median-capture tool).
+- Reported for IA owner: desktopNav "خریدارها" currently routes to /quote; D1 تکمیلی card shows no installment badge (desktop hides it via CSS, mobile data untouched — D1 wins).
+
+Stage Summary:
+- Desktop Scroll 1 pixel-verified against D1 at 1536x1024 (3.019%, structure ±3px, mascot 0.994 IoU); mobile frozen (median golden protocol, structural 0); all suites green; pushed e49f49d.
+- Artifacts: analysis/{shot-d1,diff-d1,side-d1}.png, /tmp/resp-*.png, tests/median-capture.mjs, tests/golden/m-*.png (median baselines).
