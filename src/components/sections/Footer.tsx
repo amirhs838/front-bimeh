@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef } from "react";
-import { footer } from "@/data/footer";
+import { Fragment, useEffect, useRef } from "react";
+import { footer, footerDesktop, paragraphLinesDesktop } from "@/data/footer";
 import { site } from "@/data/site";
 import { useUI } from "@/lib/ui-store";
 import { px } from "@/lib/format";
@@ -11,8 +11,11 @@ import {
   HeadsetIcon,
   QuestionIcon,
   PhoneFilledIcon,
+  PhoneStrokeIcon,
   PinIcon,
+  PinOutlineIcon,
   EnvelopeIcon,
+  EnvelopeOutlineIcon,
   ChevronLeftIcon,
 } from "./f-icons";
 
@@ -22,6 +25,15 @@ import {
  * the page bg; everything inside is absolutely positioned in design units,
  * card-relative. The reference's outer margins are NOT equal (16.2 / 12.5) —
  * replicated as-is. Decor (waves + red curve + dot) is clipped by the card.
+ *
+ * DESKTOP (>=1280): the same DOM is re-presented as the D4 full-bleed footer
+ * ("Persian Insurance AI Website Footer.png", 1672x940; --d4 = --d*1536/1672).
+ * The mobile card chrome is reset inside the media query (no card, no shadow,
+ * no radius), the mobile paragraph / mobile decor / contact chevrons / pill
+ * backgrounds are hidden, and desktop-only parts (FooterDecorDesktop, the D4
+ * paragraph, column dividers, contact separators, outline glyphs) become
+ * visible. All desktop geometry lives in footerDesktop (D4 image px) and the
+ * /* DESKTOP >=1280 *​/ block of globals.css. Mobile is untouched.
  *
  * Reveal groups are `absolute inset-0` overlays (pointer-events-none, with
  * pointer-events-auto on the interactive children): a transformed wrapper
@@ -64,7 +76,7 @@ function NudgeChevron({
   return (
     <span
       aria-hidden
-      className="pointer-events-none absolute"
+      className="f-chev pointer-events-none absolute"
       style={
         fromLeft
           ? { left: px(cx), top: `calc(50% + ${px(dy)})`, transform: "translate(-50%, -50%)" }
@@ -72,7 +84,7 @@ function NudgeChevron({
       }
     >
       <ChevronLeftIcon
-        className="text-f-chevron transition-transform duration-150 group-hover:translate-x-[-0.125rem]"
+        className="f-chev-svg text-f-chevron transition-transform duration-150 group-hover:translate-x-[-0.125rem]"
         style={{ width: px(w), height: px(h), display: "block" }}
       />
     </span>
@@ -104,13 +116,14 @@ function PillIcon({ name }: { name: string }) {
 }
 
 /** One quick-access pill: the whole pill is the hit target. */
-function QuickPill({ item }: { item: (typeof footer.quick.items)[number] }) {
+function QuickPill({ item, index }: { item: (typeof footer.quick.items)[number]; index: number }) {
   const openSupport = useUI((s) => s.openSupport);
+  const dkRow = footerDesktop.quick.rows[index];
   const inner = (
     <>
       <span
         aria-hidden
-        className="pointer-events-none absolute flex items-center justify-center rounded-full"
+        className="f-qa-circle pointer-events-none absolute flex items-center justify-center rounded-full"
         style={{
           right: px(footer.quick.circleInsetR),
           top: `calc(50% - ${px(footer.quick.circleD / 2)})`,
@@ -119,10 +132,18 @@ function QuickPill({ item }: { item: (typeof footer.quick.items)[number] }) {
           background: "var(--f-pill-icon-bg)",
         }}
       >
-        <PillIcon name={item.icon} />
+        <span
+          className={`f-m-icon flex items-center justify-center${item.icon === "phoneFilled" ? " f-m-icon-swap" : ""}`}
+        >
+          <PillIcon name={item.icon} />
+        </span>
+        {/* D4 renders the phone handset STROKE-style on desktop */}
+        {item.icon === "phoneFilled" && (
+          <PhoneStrokeIcon className="f-d-icon text-brand" style={{ width: px(24), height: px(24) }} />
+        )}
       </span>
       <span
-        className="pointer-events-none absolute whitespace-nowrap text-f-text"
+        className="f-qa-label pointer-events-none absolute whitespace-nowrap text-f-text"
         style={{ right: px(footer.quick.pillRight - footer.quick.labelRight), top: `calc(50% + ${px(0.75)})`, transform: "translateY(-50%)", fontSize: px(item.labelSize), fontWeight: 500 }}
       >
         {item.label}
@@ -137,7 +158,7 @@ function QuickPill({ item }: { item: (typeof footer.quick.items)[number] }) {
     </>
   );
   const cls =
-    "f-hit pointer-events-auto group absolute block cursor-pointer rounded-full outline-offset-2 bg-[var(--f-pill-bg)] transition-colors duration-150 hover:bg-[#ececf4] focus-visible:bg-[#ececf4]";
+    "f-hit f-qa-row pointer-events-auto group absolute block cursor-pointer rounded-full outline-offset-2 bg-[var(--f-pill-bg)] transition-colors duration-150 hover:bg-[#ececf4] focus-visible:bg-[#ececf4]";
   const style: React.CSSProperties = {
     left: px(footer.quick.pillLeft),
     width: px(footer.quick.pillRight - footer.quick.pillLeft),
@@ -145,6 +166,10 @@ function QuickPill({ item }: { item: (typeof footer.quick.items)[number] }) {
     height: px(item.height),
     "--hit-t": px(-4),
     "--hit-b": px(-4),
+    "--dki": index,
+    "--dkcy": dkRow.cy,
+    "--dkh": dkRow.h,
+    "--dkfs": dkRow.size,
   } as React.CSSProperties;
   if (item.action === "support") {
     return (
@@ -165,13 +190,14 @@ function QuickPill({ item }: { item: (typeof footer.quick.items)[number] }) {
 }
 
 /** One link row of a link column (label right + chevron left). */
-function ColumnRow({ link, col }: { link: (typeof footer.columns.right.links)[number]; col: "right" | "left" }) {
+function ColumnRow({ link, col, index }: { link: (typeof footer.columns.right.links)[number]; col: "right" | "left"; index: number }) {
   const c = footer.columns[col];
+  const dkRow = (col === "right" ? footerDesktop.services : footerDesktop.about).rows[index];
   const openChat = useUI((s) => s.openChat);
   const inner = (
     <>
       <span
-        className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 whitespace-nowrap text-f-text transition-colors duration-150 group-hover:text-f-ink"
+        className="f-rowlabel pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 whitespace-nowrap text-f-text transition-colors duration-150 group-hover:text-f-ink"
         style={{ fontSize: px(link.size), fontWeight: 500 }}
       >
         {link.label}
@@ -179,7 +205,7 @@ function ColumnRow({ link, col }: { link: (typeof footer.columns.right.links)[nu
       <NudgeChevron cx={12} w={6.7} h={9.25} dy={1.5} fromLeft />
     </>
   );
-  const cls = "f-hit pointer-events-auto group absolute block cursor-pointer";
+  const cls = "f-hit f-row pointer-events-auto group absolute block cursor-pointer";
   const style = {
     left: px(c.chevronCx - 12),
     right: px(c.labelRight),
@@ -187,6 +213,10 @@ function ColumnRow({ link, col }: { link: (typeof footer.columns.right.links)[nu
     height: px(26.3),
     "--hit-t": px(-2),
     "--hit-b": px(-2),
+    "--dki": index,
+    "--dkcy": dkRow.cy,
+    "--dkh": dkRow.h,
+    "--dkfs": dkRow.size,
   } as React.CSSProperties;
   if (link.action === "chat") {
     return (
@@ -214,7 +244,8 @@ function ContactRow({ row }: { row: (typeof footer.contact.rows)[number] }) {
   const label = row.kind === "map" ? c.address : row.kind === "email" ? c.email : c.phoneDisplay;
   return (
     <li
-      className="absolute list-none"
+      className="f-contact-li absolute list-none"
+      data-kind={row.kind}
       style={{ left: px(footer.contact.iconCx - 10), right: px(19), top: px(row.cy - 13.2), height: px(26.4) }}
     >
       <a
@@ -222,20 +253,28 @@ function ContactRow({ row }: { row: (typeof footer.contact.rows)[number] }) {
         {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
         dir="ltr"
         aria-label={label}
-        className="f-hit group absolute inset-0 block cursor-pointer"
+        className="f-hit f-contact-row group pointer-events-auto absolute inset-0 block cursor-pointer"
         style={{ "--hit-t": px(-2), "--hit-b": px(-2) } as React.CSSProperties}
       >
         <span
           aria-hidden
-          className="pointer-events-none absolute flex items-center text-brand"
+          className="f-contact-circle pointer-events-none absolute flex items-center text-brand"
           style={{ left: px(10.1), top: "50%", transform: "translate(-50%, -50%)" }}
         >
-          {row.icon === "pin" && <PinIcon style={{ width: px(14.6), height: px(13.6), display: "block" }} />}
-          {row.icon === "envelope" && <EnvelopeIcon style={{ width: px(12.6), height: px(10.35), display: "block" }} />}
-          {row.icon === "phoneFilled" && <PhoneFilledIcon style={{ width: px(14.4), height: px(14.4), display: "block" }} />}
+          <span className="f-m-icon flex items-center justify-center">
+            {row.icon === "pin" && <PinIcon style={{ width: px(14.6), height: px(13.6), display: "block" }} />}
+            {row.icon === "envelope" && <EnvelopeIcon style={{ width: px(12.6), height: px(10.35), display: "block" }} />}
+            {row.icon === "phoneFilled" && <PhoneFilledIcon style={{ width: px(14.4), height: px(14.4), display: "block" }} />}
+          </span>
+          {/* D4 contact glyphs are OUTLINE variants (desktop-only) */}
+          <span className="f-d-icon items-center justify-center">
+            {row.icon === "pin" && <PinOutlineIcon style={{ width: px(22), height: px(22), display: "block" }} />}
+            {row.icon === "envelope" && <EnvelopeOutlineIcon style={{ width: px(22), height: px(17.5), display: "block" }} />}
+            {row.icon === "phoneFilled" && <PhoneStrokeIcon style={{ width: px(22), height: px(22), display: "block" }} />}
+          </span>
         </span>
         <span
-          className="pointer-events-none absolute top-1/2 -translate-y-1/2 whitespace-nowrap text-f-text"
+          className="f-contact-text pointer-events-none absolute top-1/2 -translate-y-1/2 whitespace-nowrap text-f-text"
           style={{
             left: px(footer.contact.textLeft - (footer.contact.iconCx - 10)),
             fontSize: px(row.size),
@@ -256,7 +295,7 @@ function FooterDecor() {
   return (
     <svg
       aria-hidden
-      className="f-fade pointer-events-none absolute inset-0"
+      className="f-fade f-decor-m pointer-events-none absolute inset-0"
       style={{ width: px(CARD_W), height: px(CARD_H), transitionDelay: "350ms" }}
       viewBox={`0 0 ${CARD_W} ${CARD_H}`}
       fill="none"
@@ -311,6 +350,96 @@ function FooterDecor() {
   );
 }
 
+/**
+ * DESKTOP-ONLY decor (D4 §5.F): full-bleed bottom layer — two pale-pink wave
+ * fills + a thin brand-red hairline curve + the glowing red dot. Hidden below
+ * 1280 (base display:none). The SVG stretches horizontally with the viewport
+ * (preserveAspectRatio="none"); the dot is a separate HTML element at a
+ * percentage left so it stays a perfect circle at any width.
+ */
+function FooterDecorDesktop() {
+  const d = footerDesktop.decor;
+  return (
+    <div
+      aria-hidden
+      className="f-decor-d f-fade pointer-events-none"
+      style={{ transitionDelay: "350ms" }}
+    >
+      <svg
+        className="absolute inset-0 h-full w-full"
+        viewBox="0 0 1672 215"
+        preserveAspectRatio="none"
+        fill="none"
+      >
+        <defs>
+          {/* pale base wave: slightly deepens then lightens to the bottom */}
+          <linearGradient id="fdk-a" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="215">
+            <stop offset="0" stopColor="#faf0f7" />
+            <stop offset="0.6" stopColor="#faebf2" />
+            <stop offset="0.8" stopColor="#f9f0f6" />
+            <stop offset="1" stopColor="#f9f3f9" />
+          </linearGradient>
+          {/* deeper wave band: fades out by ~y160 (885p) */}
+          <linearGradient id="fdk-b" gradientUnits="userSpaceOnUse" x1="0" y1="40" x2="0" y2="160">
+            <stop offset="0" stopColor="#fae3ed" />
+            <stop offset="0.55" stopColor="#fae9f1" stopOpacity="0.55" />
+            <stop offset="1" stopColor="#faeff5" stopOpacity="0" />
+          </linearGradient>
+          {/* hairline fade-in at its left end */}
+          <linearGradient id="fdk-curve-fade" gradientUnits="userSpaceOnUse" x1="925" y1="0" x2="1010" y2="0">
+            <stop offset="0" stopColor="#fff" stopOpacity="0" />
+            <stop offset="1" stopColor="#fff" stopOpacity="1" />
+          </linearGradient>
+          <mask id="fdk-curve-mask">
+            <rect width="1672" height="215" fill="url(#fdk-curve-fade)" />
+          </mask>
+        </defs>
+        {/* layer 1: pale wave — crest x216-288, trough x1008 */}
+        <path
+          d="M0 37 C50 22 100 10 160 3 C210 -1 250 0 300 4 C370 10 430 26 500 42 C560 55 620 72 690 95 C760 116 830 133 920 140 C980 143 1030 142 1090 138 C1150 133 1210 120 1280 101 C1350 80 1430 60 1500 48 C1560 40 1620 43 1672 48 L1672 215 L0 215 Z"
+          fill="url(#fdk-a)"
+        />
+        {/* layer 2: deeper band — crest x360, trough x980, meets layer 1 at the right */}
+        <path
+          d="M0 131 C40 102 80 80 140 63 C200 50 260 45 320 45 C380 46 440 55 500 66 C560 77 640 93 720 108 C800 122 870 133 950 139 C1030 142 1100 136 1170 126 C1240 115 1300 98 1360 80 C1420 63 1480 52 1540 46 C1600 42 1650 43 1672 45 L1672 215 L0 215 Z"
+          fill="url(#fdk-b)"
+        />
+        {/* thin brand-red hairline: fade-in ~x925, trough (1020,126.5), through
+            the dot (1305,82), exits the right edge at (1672,6) */}
+        <path
+          d="M925 121 C970 125 1010 126.5 1045 126.5 C1105 126 1155 117 1205 107.5 C1255 98 1275 90 1305 82 C1338 74 1372 63 1405 52 C1445 39.5 1505 23 1565 12.5 C1605 6 1645 5 1672 5.5"
+          stroke="var(--dk4-curve)"
+          strokeOpacity="0.9"
+          strokeWidth="1.3"
+          strokeLinecap="round"
+          vectorEffect="non-scaling-stroke"
+          mask="url(#fdk-curve-mask)"
+        />
+      </svg>
+      {/* red dot + pulsing glow (HTML so it never stretches) */}
+      <span
+        className="absolute"
+        style={{
+          left: `${(d.dotX / footerDesktop.frame.w) * 100}%`,
+          top: `calc(${d.dotY} * var(--d4))`,
+          width: `calc(${d.dotD} * var(--d4))`,
+          height: `calc(${d.dotD} * var(--d4))`,
+          transform: "translate(-50%, -50%)",
+        }}
+      >
+        <span
+          className="anim-s2-glow absolute inset-0 rounded-full"
+          style={{ background: "var(--dk4-dot)", filter: "blur(calc(3 * var(--d4)))", opacity: 0.5 }}
+        />
+        <span
+          className="absolute inset-0 rounded-full"
+          style={{ background: "var(--dk4-dot)" }}
+        />
+      </span>
+    </div>
+  );
+}
+
 export function Footer() {
   const rootRef = useRef<HTMLElement | null>(null);
 
@@ -334,6 +463,7 @@ export function Footer() {
   }, []);
 
   const f = footer;
+  const dk = footerDesktop;
   return (
     <footer
       ref={rootRef}
@@ -345,9 +475,11 @@ export function Footer() {
         paddingBottom: `calc(${px(69.5)} + env(safe-area-inset-bottom))`,
       }}
     >
-      <div className="relative mx-auto max-w-[28.125rem]">
+      <FooterDecorDesktop />
+
+      <div className="f-col relative mx-auto max-w-[28.125rem]">
         <div
-          className="f-reveal relative overflow-hidden"
+          className="f-card f-reveal relative overflow-hidden"
           style={{
             // RTL block layout: margins must sum with the width to the
             // container (16.2 + 421.3 + 12.5 = 450) or the leftover space is
@@ -369,13 +501,13 @@ export function Footer() {
               the reduced-motion override (`transform: none !important` on
               .f-reveal) would kill an inline centering transform here. */}
           <p
-            className="f-reveal pointer-events-none absolute"
+            className="f-brand f-reveal pointer-events-none absolute"
             style={{ right: px(f.wordmark.right), top: px(37.9) }}
           >
             <Link
               href="/"
               aria-label="Bimeh AI — صفحه اصلی"
-              className="font-wordmark pointer-events-auto inline-block whitespace-nowrap leading-none text-brand"
+              className="f-brand-link font-wordmark pointer-events-auto inline-block whitespace-nowrap leading-none text-brand"
               style={{ fontSize: px(f.wordmark.size), fontWeight: 700, letterSpacing: "-0.01em" }}
             >
               Bimeh AI
@@ -391,7 +523,7 @@ export function Footer() {
             >
               {f.intro.heading}
             </h2>
-            <p style={{ position: "absolute", inset: 0 }}>
+            <p className="f-para-m" style={{ position: "absolute", inset: 0 }}>
               <span className="sr-only">{f.intro.lines.map((l) => l.text).join(" ")}</span>
               {f.intro.lines.map((line, i) =>
                 line.noJustify ? (
@@ -434,10 +566,56 @@ export function Footer() {
                 ),
               )}
             </p>
+            {/* DESKTOP paragraph (D4 wording; hidden below 1280).
+                L1-L4: one block span each, stretched to the fixed 533p box
+                with text-align-last: justify (word gaps only — no kashida,
+                no letter-spacing). L5 keeps its natural width. Real space
+                text nodes between spans are what justify distributes. */}
+            <p className="f-para-d">
+              <span className="sr-only">{paragraphLinesDesktop.join(" ")}</span>
+              {paragraphLinesDesktop.map((line, i) => {
+                const parts = toTokens(line);
+                const inner = parts.map((w, j) => (
+                  <Fragment key={j}>
+                    {j > 0 && " "}
+                    {w === "Bimeh AI" ? (
+                      <span dir="ltr" className="font-wordmark">
+                        {w}
+                      </span>
+                    ) : (
+                      <span>{w}</span>
+                    )}
+                  </Fragment>
+                ));
+                return i < 4 ? (
+                  <span key={i} aria-hidden className="f-para-d-line">
+                    {inner}
+                  </span>
+                ) : (
+                  <span key={i} aria-hidden className="f-para-d-l5">
+                    {inner}
+                  </span>
+                );
+              })}
+            </p>
           </div>
 
           {/* ---- quick access ---- */}
-          <nav aria-labelledby="qa-title" className={GROUP} style={{ transitionDelay: "140ms" }}>
+          <nav
+            aria-labelledby="qa-title"
+            className={`${GROUP} f-col-quick`}
+            style={{
+              transitionDelay: "140ms",
+              "--dktr": dk.quick.titleRight,
+              "--dktcy": dk.quick.titleCy,
+              "--dkts": 24.9,
+              "--dkulr": dk.quick.ulRight,
+              "--dkrl": dk.quick.rowLeft,
+              "--dkrr": dk.quick.rowRight,
+              "--dkdl": dk.quick.divLeft,
+              "--dkdr": dk.quick.divRight,
+            } as React.CSSProperties}
+          >
             <h3
               id="qa-title"
               className="whitespace-nowrap text-f-ink"
@@ -447,21 +625,41 @@ export function Footer() {
             </h3>
             <span
               aria-hidden
-              className="absolute rounded-full bg-brand"
+              className="f-ul absolute rounded-full bg-brand"
               style={{ right: px(f.quick.underline.right), top: px(f.quick.underline.cy - 0.95), width: px(f.quick.underline.w), height: px(1.9) }}
             />
             <ul role="list" className="list-none">
-              {f.quick.items.map((item) => (
-                <QuickPill key={item.label} item={item} />
+              {f.quick.items.map((item, i) => (
+                <QuickPill key={item.label} item={item} index={i} />
               ))}
             </ul>
+            {/* DESKTOP-ONLY row dividers (D4; display:none below 1280) */}
+            {dk.quick.divs.map((y) => (
+              <span key={y} aria-hidden className="f-dk-div" style={{ "--dkdy": y } as React.CSSProperties} />
+            ))}
           </nav>
 
           {/* ---- two link columns ---- */}
           {(["right", "left"] as const).map((col) => {
             const c = f.columns[col];
+            const dkc = col === "right" ? dk.services : dk.about;
             return (
-              <nav key={c.id} aria-labelledby={c.id} className={GROUP} style={{ transitionDelay: "210ms" }}>
+              <nav
+                key={c.id}
+                aria-labelledby={c.id}
+                className={`${GROUP} ${col === "right" ? "f-col-services" : "f-col-about"}`}
+                style={{
+                  transitionDelay: "210ms",
+                  "--dktr": dkc.titleRight,
+                  "--dktcy": dkc.titleCy,
+                  "--dkts": col === "right" ? 24.9 : 26.7,
+                  "--dkulr": dkc.ulRight,
+                  "--dkrl": dkc.rowLeft,
+                  "--dkrr": dkc.rowRight,
+                  "--dkdl": dkc.divLeft,
+                  "--dkdr": dkc.divRight,
+                } as React.CSSProperties}
+              >
                 <h3
                   id={c.id}
                   className="whitespace-nowrap text-f-ink"
@@ -471,25 +669,33 @@ export function Footer() {
                 </h3>
                 <span
                   aria-hidden
-                  className="absolute rounded-full bg-brand"
+                  className="f-ul absolute rounded-full bg-brand"
                   style={{ right: px(c.titleRight), top: px(f.columns.underlineCy - 0.95), width: px(c.underlineW), height: px(1.9) }}
                 />
                 <ul role="list" className="list-none">
-                  {c.links.map((link) => (
-                    <ColumnRow key={link.label} link={link} col={col} />
+                  {c.links.map((link, i) => (
+                    <ColumnRow key={link.label} link={link} col={col} index={i} />
                   ))}
                 </ul>
+                {/* DESKTOP-ONLY row dividers (D4; display:none below 1280) */}
+                {dkc.divs.map((y) => (
+                  <span key={y} aria-hidden className="f-dk-div" style={{ "--dkdy": y } as React.CSSProperties} />
+                ))}
               </nav>
             );
           })}
 
           {/* ---- divider + contact ---- */}
-          <div className={GROUP} style={{ transitionDelay: "280ms" }}>
+          <div className={`${GROUP} f-contact-g`} style={{ transitionDelay: "280ms" }}>
             <span
               aria-hidden
-              className="absolute"
+              className="f-maindiv absolute"
               style={{ left: px(f.divider.left), right: px(CARD_W - f.divider.right), top: px(f.divider.cy - 0.5), height: 1, background: "var(--f-divider)" }}
             />
+            {/* DESKTOP-ONLY contact separators (display:none below 1280) */}
+            {dk.contact.vseps.map((x) => (
+              <span key={x} aria-hidden className="f-dk-vsep" style={{ "--dkvx": x } as React.CSSProperties} />
+            ))}
             <ul role="list" className="list-none">
               {f.contact.rows.map((row) => (
                 <ContactRow key={row.kind} row={row} />

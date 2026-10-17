@@ -312,6 +312,14 @@ html {
 .s3-dk-icon {
   display: none;
 }
+/* --- Footer DESKTOP-only parts (display:none below --bp-desktop) --- */
+.f-decor-d,
+.f-para-d,
+.f-d-icon,
+.f-dk-div,
+.f-dk-vsep {
+  display: none;
+}
 /* --- Footer reveal (same no-JS-safe pattern) --- */
 /* extended hit targets for footer rows (vars set inline per row) */
 .f-hit::after {
@@ -1168,6 +1176,362 @@ html {
   }
   .s3-dk-desc span:nth-child(2) {
     font-size: calc(var(--dk-dfs2) * var(--d3));
+  }
+
+  /* ===================================================================
+     FOOTER (desktop, D4 "Persian Insurance AI Website Footer.png",
+     frame 1672x940; --d4 = --d * 1536/1672 ≈ 0.9187d per image px;
+     coordinates are D4 image px "p" from footerDesktop / measured).
+     The mobile card look is fully reset: full-bleed section, no card,
+     no border, no shadow, no rounded corners. Mobile declarations are
+     never edited — every override lives inside this MQ.
+     =================================================================== */
+  :root {
+    --d4: calc(var(--d) * 1536 / 1672);
+    /* --- tokens sampled from D4 (mobile --f-* values untouched) --- */
+    --dk4-bg: #f5f9fd;          /* section bg (flat, corners checked) */
+    --dk4-ink: #050b2e;         /* heading / column-title ink core */
+    --dk4-text: #52608e;        /* paragraph + link labels */
+    --dk4-contact: #3d4f7b;     /* contact text (darker than labels) */
+    --dk4-chevron: #5f6c94;     /* chevron strokes */
+    --dk4-divider: #e2e9f5;     /* 1p dividers / separators */
+    --dk4-red: #fd103c;         /* underlines + qa/contact glyphs */
+    --dk4-wordmark: #fd1946;    /* wordmark red (bluer than --brand) */
+    --dk4-curve: #fb2450;       /* hairline curve */
+    --dk4-dot: #fa1142;         /* red dot */
+    --dk4-top-pad: calc(140 * var(--d4)); /* empty bg above the wordmark */
+    --dk4-circle-hover: #f8dbe6; /* icon-circle hover deepen */
+  }
+
+  /* ---------------- section root: full-bleed, fixed height ----------
+     §3.A: the interim mobile top gradient (inline style) is superseded —
+     eased --s3-bg → --dk4-bg over the first 60d, then flat. */
+  #footer {
+    height: calc(940 * var(--d4));
+    padding-bottom: 0 !important;
+    background: linear-gradient(180deg, var(--s3-bg) 0px, var(--dk4-bg) calc(60 * var(--d4))) !important;
+    background-color: var(--dk4-bg) !important;
+  }
+  /* the 480px mobile column wrapper becomes the 1536d content frame */
+  #footer .f-col {
+    max-width: calc(1536 * var(--d)) !important;
+    height: 100%;
+  }
+  /* mobile card chrome reset (the frame IS the section) */
+  #footer .f-card {
+    margin: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
+  /* the card-level reveal would double-fade the inner groups — disable it;
+     group reveals stay (16d travel per §8) */
+  .js #footer .f-reveal:not(.is-in) {
+    transform: translateY(calc(16 * var(--d4)));
+  }
+  .js #footer .f-card:not(.is-in) {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ---------------- mobile-only pieces die on desktop ---------------- */
+  #footer .f-decor-m,
+  #footer .f-para-m,
+  #footer .f-contact-row .f-chev {
+    display: none !important;
+  }
+  #footer .f-qa-row .f-m-icon-swap,
+  #footer .f-contact-circle .f-m-icon {
+    display: none;
+  }
+  /* the quick-access rows keep their hit target; only the mobile pill
+     background / radius die (D4 has plain rows with icon circles) */
+  #footer .f-qa-row,
+  #footer .f-qa-row:hover,
+  #footer .f-qa-row:focus-visible {
+    background: transparent !important;
+    border-radius: 0 !important;
+  }
+  #footer .f-decor-d {
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: calc(215 * var(--d4));
+    overflow: hidden;
+    z-index: 0;
+  }
+  #footer .f-col,
+  #footer .f-card {
+    z-index: 1;
+  }
+
+  /* ---------------- brand wordmark (ink x1345-1591, y140-185) -------- */
+  #footer .f-brand {
+    right: calc(77.4 * var(--d4)) !important;
+    top: calc(138.2 * var(--d4)) !important;
+  }
+  #footer .f-brand-link {
+    font-size: calc(57 * var(--d4)) !important;
+    color: var(--dk4-wordmark) !important;
+  }
+
+  /* ---------------- intro heading (ink x1178-1591, cy 245.5) --------- */
+  #footer #f-title {
+    right: calc(80 * var(--d4)) !important;
+    top: calc(245.5 * var(--d4)) !important;
+    font-size: calc(29.5 * var(--d4)) !important;
+    color: var(--dk4-ink) !important;
+  }
+
+  /* ---------------- desktop paragraph (L1-L4 justified, L5 free) ----- */
+  #footer .f-para-d {
+    display: block;
+    position: absolute;
+    right: calc(80 * var(--d4));
+    top: calc(285.75 * var(--d4));
+    width: calc(533 * var(--d4));
+    margin: 0;
+    font-size: calc(17.8 * var(--d4));
+    line-height: calc(39.5 * var(--d4));
+    font-weight: 400;
+    color: var(--dk4-text);
+    text-align: justify;
+  }
+  #footer .f-para-d-line {
+    display: block;
+    text-align: justify;
+    text-align-last: justify;
+  }
+  #footer .f-para-d-l5 {
+    display: block;
+    text-align: start;
+    white-space: nowrap;
+    font-size: calc(15.8 * var(--d4));
+  }
+  #footer .f-para-d .font-wordmark {
+    font-size: inherit;
+    font-weight: 400;
+  }
+
+  /* ---------------- column titles + underlines (shared vars) --------- */
+  #footer .f-col-quick > h3,
+  #footer .f-col-about > h3,
+  #footer .f-col-services > h3 {
+    right: calc(var(--dktr) * var(--d4)) !important;
+    top: calc(var(--dktcy) * var(--d4)) !important;
+    font-size: calc(var(--dkts) * var(--d4)) !important;
+    color: var(--dk4-ink) !important;
+  }
+  #footer .f-col-quick .f-ul,
+  #footer .f-col-about .f-ul,
+  #footer .f-col-services .f-ul {
+    right: calc(var(--dkulr) * var(--d4)) !important;
+    top: calc(222.8 * var(--d4)) !important;
+    width: calc(46 * var(--d4)) !important;
+    height: calc(3 * var(--d4)) !important;
+  }
+
+  /* ---------------- link rows (about / services share one pattern) --- */
+  #footer .f-col-about .f-row,
+  #footer .f-col-services .f-row {
+    left: calc(var(--dkrl) * var(--d4)) !important;
+    right: calc(var(--dkrr) * var(--d4)) !important;
+    top: calc((var(--dkcy) - var(--dkh) / 2) * var(--d4)) !important;
+    height: calc(var(--dkh) * var(--d4)) !important;
+  }
+  #footer .f-col-about .f-rowlabel,
+  #footer .f-col-services .f-rowlabel,
+  #footer .f-col-quick .f-qa-label {
+    font-size: calc(var(--dkfs) * var(--d4)) !important;
+    color: var(--dk4-text) !important;
+  }
+  #footer .f-col-about .f-row .f-chev,
+  #footer .f-col-services .f-row .f-chev {
+    left: calc(12 * var(--d4)) !important;
+  }
+  #footer .f-col-about .f-chev-svg,
+  #footer .f-col-services .f-chev-svg,
+  #footer .f-col-quick .f-chev-svg {
+    color: var(--dk4-chevron) !important;
+    width: calc(10 * var(--d4)) !important;
+    height: calc(18 * var(--d4)) !important;
+  }
+
+  /* ---------------- quick access (leftmost column, D4 §5.C3) --------- */
+  #footer .f-col-quick .f-qa-row {
+    left: calc(var(--dkrl) * var(--d4)) !important;
+    right: calc(var(--dkrr) * var(--d4)) !important;
+    width: auto !important;
+    top: calc((var(--dkcy) - var(--dkh) / 2) * var(--d4)) !important;
+    height: calc(var(--dkh) * var(--d4)) !important;
+  }
+  #footer .f-col-quick .f-qa-row .f-chev {
+    left: calc(9.5 * var(--d4)) !important;
+  }
+  #footer .f-col-quick .f-qa-circle {
+    right: calc(0.5 * var(--d4)) !important;
+    top: calc(50% - 24.5 * var(--d4)) !important;
+    width: calc(49 * var(--d4)) !important;
+    height: calc(49 * var(--d4)) !important;
+    justify-content: center;
+  }
+  /* per-glyph boxes: fitted so each icon's INK matches D4 (23x27 shield,
+     25x25 headset, 24x24 question, 23x22 phone, 20x26 pin, 24x19 mail,
+     22x21 tel) — the blanket size below is the fallback */
+  #footer .f-col-quick .f-qa-circle svg {
+    width: calc(26 * var(--d4)) !important;
+    height: calc(26 * var(--d4)) !important;
+  }
+  #footer .f-col-quick ul > li:nth-child(1) .f-qa-circle svg {
+    width: calc(27.3 * var(--d4)) !important;
+    height: calc(31.5 * var(--d4)) !important;
+  }
+  #footer .f-col-quick ul > li:nth-child(2) .f-qa-circle svg {
+    width: calc(30 * var(--d4)) !important;
+    height: calc(30 * var(--d4)) !important;
+  }
+  #footer .f-col-quick ul > li:nth-child(3) .f-qa-circle svg {
+    width: calc(26.3 * var(--d4)) !important;
+    height: calc(26.3 * var(--d4)) !important;
+  }
+  #footer .f-col-quick ul > li:nth-child(4) .f-qa-circle svg {
+    width: calc(30.2 * var(--d4)) !important;
+    height: calc(30.2 * var(--d4)) !important;
+  }
+  #footer .f-col-quick .f-qa-circle,
+  #footer .f-contact-circle {
+    color: var(--dk4-red) !important;
+  }
+  #footer .f-col-quick .f-qa-label {
+    right: calc(76 * var(--d4)) !important;
+    top: 50% !important;
+  }
+  /* the stroke handset replaces the filled glyph (D4) */
+  #footer .f-col-quick .f-d-icon {
+    display: block;
+  }
+
+  /* ---------------- desktop-only dividers / separators --------------- */
+  #footer .f-dk-div {
+    display: block;
+    position: absolute;
+    left: calc(var(--dkdl) * var(--d4));
+    width: calc((var(--dkdr) - var(--dkdl)) * var(--d4));
+    top: calc(var(--dkdy) * var(--d4));
+    height: 1px;
+    background: var(--dk4-divider);
+    pointer-events: none;
+  }
+  #footer .f-maindiv {
+    left: calc(80 * var(--d4)) !important;
+    right: calc(80 * var(--d4)) !important;
+    top: calc(557 * var(--d4)) !important;
+    height: 1px !important;
+    background: var(--dk4-divider) !important;
+  }
+  #footer .f-dk-vsep {
+    display: block;
+    position: absolute;
+    left: calc(var(--dkvx) * var(--d4));
+    top: calc(612 * var(--d4));
+    height: calc(40 * var(--d4));
+    width: 1px;
+    background: var(--dk4-divider);
+    pointer-events: none;
+  }
+
+  /* ---------------- contact row (three LTR items, cy 629.5) ---------- */
+  #footer .f-contact-li {
+    top: calc((629.5 - 24) * var(--d4)) !important;
+    height: calc(48 * var(--d4)) !important;
+  }
+  #footer .f-contact-li[data-kind="map"] {
+    left: calc(1103 * var(--d4)) !important;
+    right: calc(222 * var(--d4)) !important;
+  }
+  #footer .f-contact-li[data-kind="email"] {
+    left: calc(708 * var(--d4)) !important;
+    right: calc(747 * var(--d4)) !important;
+  }
+  #footer .f-contact-li[data-kind="tel"] {
+    left: calc(336 * var(--d4)) !important;
+    right: calc(1127 * var(--d4)) !important;
+  }
+  #footer .f-contact-circle {
+    width: calc(49.5 * var(--d4)) !important;
+    height: calc(49.5 * var(--d4)) !important;
+    border-radius: 50%;
+    background: var(--f-pill-icon-bg);
+    justify-content: center;
+  }
+  #footer .f-contact-li[data-kind="map"] .f-contact-circle {
+    left: calc(25.5 * var(--d4)) !important;
+  }
+  #footer .f-contact-li[data-kind="email"] .f-contact-circle,
+  #footer .f-contact-li[data-kind="tel"] .f-contact-circle {
+    left: calc(24.5 * var(--d4)) !important;
+  }
+  #footer .f-contact-circle .f-d-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #footer .f-contact-li[data-kind="map"] .f-d-icon svg {
+    width: calc(32 * var(--d4)) !important;
+    height: calc(32 * var(--d4)) !important;
+  }
+  #footer .f-contact-li[data-kind="email"] .f-d-icon svg {
+    width: calc(26.2 * var(--d4)) !important;
+    height: calc(20.7 * var(--d4)) !important;
+  }
+  #footer .f-contact-li[data-kind="tel"] .f-d-icon svg {
+    width: calc(29 * var(--d4)) !important;
+    height: calc(29 * var(--d4)) !important;
+  }
+  #footer .f-contact-li[data-kind="map"] .f-contact-text {
+    left: calc(77 * var(--d4)) !important;
+    font-size: calc(19.5 * var(--d4)) !important;
+    top: calc(50% + 2.5 * var(--d4)) !important;
+  }
+  #footer .f-contact-li[data-kind="email"] .f-contact-text {
+    left: calc(77 * var(--d4)) !important;
+    font-size: calc(20 * var(--d4)) !important;
+    top: calc(50% + 4 * var(--d4)) !important;
+  }
+  #footer .f-contact-li[data-kind="tel"] .f-contact-text {
+    left: calc(72.5 * var(--d4)) !important;
+    font-size: calc(22.4 * var(--d4)) !important;
+    top: calc(50% + 4 * var(--d4)) !important;
+  }
+  #footer .f-contact-text {
+    color: var(--dk4-contact) !important;
+  }
+
+  /* ---------------- hover / press (after interaction only, §8) ------- */
+  #footer .f-row:hover .f-rowlabel,
+  #footer .f-row:focus-visible .f-rowlabel,
+  #footer .f-qa-row:hover .f-qa-label,
+  #footer .f-qa-row:focus-visible .f-qa-label {
+    color: var(--dk4-ink) !important;
+  }
+  #footer .f-row:hover .f-chev-svg,
+  #footer .f-row:focus-visible .f-chev-svg,
+  #footer .f-qa-row:hover .f-chev-svg,
+  #footer .f-qa-row:focus-visible .f-chev-svg {
+    /* Tailwind 4 nudges via the `translate` property — compose-free override */
+    translate: calc(-3 * var(--d4)) 0;
+    transform: none;
+  }
+  #footer .f-qa-row:hover .f-qa-circle,
+  #footer .f-qa-row:focus-visible .f-qa-circle,
+  #footer .f-contact-row:hover .f-contact-circle,
+  #footer .f-contact-row:focus-visible .f-contact-circle {
+    background: var(--dk4-circle-hover) !important;
   }
 }
 /* ===================== END DESKTOP >=1280 ===================== */

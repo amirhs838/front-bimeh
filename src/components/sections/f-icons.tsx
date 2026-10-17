@@ -118,3 +118,62 @@ export function ChevronLeftIcon(props: SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+
+/* ------------------------------------------------------------------ */
+/* DESKTOP (>=1280) glyph variants — D4 renders these OUTLINE while the
+   mobile set is filled. Rendered only inside the desktop MQ (base
+   display:none via .f-d-icon). All stroke = currentColor = brand red. */
+
+/** Stroke-style handset — D4 quick-access "تماس با ما" + contact phone. */
+export function PhoneStrokeIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden {...props}>
+      <path
+        d="M5.6 10.1c1.55 3.04 4.05 5.54 7.09 7.09l2.36-2.36c.3-.3.72-.39 1.1-.26 1.2.4 2.5.61 3.84.61.6 0 1.08.48 1.08 1.08v3.66c0 .6-.48 1.08-1.08 1.08C10.4 21 3 13.6 3 4.11 3 3.5 3.48 3 4.08 3h3.67c.6 0 1.08.48 1.08 1.08 0 1.34.21 2.63.6 3.83.12.38.04.8-.26 1.1L5.6 10.1z"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+/** Outline map pin with inner dot — D4 contact address. */
+export function PinOutlineIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden {...props}>
+      <path
+        d="M12 21.6C12 21.6 4.9 14.9 4.9 9.4 C4.9 5.4 8.1 2.2 12 2.2 C15.9 2.2 19.1 5.4 19.1 9.4 C19.1 14.9 12 21.6 12 21.6Z"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+      <circle cx="12" cy="9.3" r="2.1" fill="currentColor" />
+    </svg>
+  );
+}
+
+/** Outline envelope — D4 contact email. */
+export function EnvelopeOutlineIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 19" fill="none" aria-hidden {...props}>
+      <rect
+        x="1"
+        y="1"
+        width="22"
+        height="17"
+        rx="3.2"
+        stroke="currentColor"
+        strokeWidth="2"
+      />
+      <path
+        d="M2.6 3.2 12 10.4 21.4 3.2"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
