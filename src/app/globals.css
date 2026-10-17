@@ -305,6 +305,13 @@ html {
     opacity 0.5s ease-out,
     transform 0.5s ease-out;
 }
+/* --- Scroll 3 DESKTOP-only parts (display:none below --bp-desktop) --- */
+.s3-dk-cta,
+.s3-dk-title,
+.s3-dk-desc,
+.s3-dk-icon {
+  display: none;
+}
 /* --- Footer reveal (same no-JS-safe pattern) --- */
 /* extended hit targets for footer rows (vars set inline per row) */
 .f-hit::after {
@@ -964,6 +971,203 @@ html {
     top: var(--dkht) !important;
     width: var(--dkhw) !important;
     height: var(--dkhh) !important;
+  }
+
+  /* ===================================================================
+     SCROLL 3 (desktop, D3 "Bimeh AI Persian Landing Page.png",
+     frame 1507x1044; --d3 = --d * 1536/1507 ≈ 1.019d per image px;
+     coordinates below are D3 image px, measured on the reference)
+     =================================================================== */
+  :root {
+    --d3: calc(var(--d) * 1536 / 1507);
+    /* --- tokens sampled from D3 (mobile values untouched) --- */
+    --dk3-heading: #070b10;     /* heading ink core (sampled (6,10,15)) */
+    --dk3-card-title: #0e1a35;  /* card title ink core (sampled) */
+    --dk3-card-desc: #8298b6;   /* card desc ink core (sampled) */
+    --dk3-red: #fb3a45;         /* D3 red cluster: CTA/AI/eyebrow/icons */
+    --dk3-halo: #dee3e7;        /* art loading placeholder (halo mid-tone) */
+  }
+
+  /* ---------------- section root: 1003p frame + 41p tail ----------------
+     D3 H3 = 1044p; the last card ends at y1003 → padding-bottom 41p (§3B).
+     The section keeps --s3-bg (Δ2/255 vs D3 bg — below the override rule). */
+  #scroll-3 {
+    padding-bottom: calc(41 * var(--d3)) !important;
+  }
+  .s3-frame {
+    max-width: calc(1536 * var(--d)) !important;
+    height: calc(1003 * var(--d3)) !important;
+  }
+  /* full-bleed top bridge (§3A): row 0 = S2's H(x) bottom profile (Δ0),
+     converging to the flat section tone by 200d — bg comes from the existing
+     override above; here only the height follows the desktop frame */
+  #scroll-3 > div[aria-hidden="true"]:first-child {
+    height: calc(1003 * var(--d3)) !important;
+  }
+
+  /* ---------------- hero art (x110-760, y84-560; Mode B raster) ----------
+     The mobile hero CARD becomes the art box: card chrome reset, feathered
+     edges dissolve into the page bg (verified Δ0 against --s3-bg). */
+  .s3-hero {
+    left: calc(110 * var(--d3)) !important;
+    top: calc(84 * var(--d3)) !important;
+    width: calc(650 * var(--d3)) !important;
+    height: calc(476 * var(--d3)) !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+    /* transparent: the art's feathered alpha must dissolve into the page bg —
+       a solid placeholder color would show through as a rectangle (the mobile
+       --s3-photo-bg loading tone is a card-chrome value, not wanted here) */
+    background: transparent !important;
+  }
+  /* banner hotspot = % of the art box (banner x294-600, y332-427) */
+  .s3-hotspot {
+    left: var(--dkhl) !important;
+    top: var(--dkht) !important;
+    width: var(--dkhw) !important;
+    height: var(--dkhh) !important;
+  }
+
+  /* ---------------- eyebrow (group x924-1150, text cy 221) ---------------- */
+  .s3-eyebrow {
+    left: calc(924 * var(--d3)) !important;
+    right: auto !important;
+    width: calc(226 * var(--d3)) !important;
+    top: calc(204 * var(--d3)) !important;
+    height: calc(34 * var(--d3)) !important;
+    font-size: calc(23 * var(--d3)) !important;
+    line-height: calc(34 * var(--d3)) !important;
+    color: var(--dk3-red);
+    transition-delay: 0ms !important;
+  }
+  .s3-eyebrow > span {
+    width: calc(23.5 * var(--d3)) !important;
+    height: calc(2 * var(--d3)) !important;
+  }
+  .s3-eyebrow > span:first-of-type {
+    margin-inline-end: calc(18 * var(--d3)) !important;
+  }
+  .s3-eyebrow > span:last-of-type {
+    margin-inline-start: calc(18 * var(--d3)) !important;
+  }
+
+  /* ---------------- heading (L1 cy286 w581; L2 cy~357/365) ----------------
+     L1 ink center x1069.5p, L2 group center x1059p (D3 renders them on
+     DIFFERENT centers — replicated with a per-line translate). */
+  .s3-heading {
+    left: calc(709 * var(--d3)) !important;
+    right: auto !important;
+    width: calc(700 * var(--d3)) !important;
+    top: calc(256 * var(--d3)) !important;
+    transition-delay: 70ms !important;
+  }
+  .s3-h-l1 {
+    font-size: calc(45.66 * var(--d3)) !important;
+    line-height: calc(60 * var(--d3)) !important;
+    color: var(--dk3-heading) !important;
+    transform: translateX(calc(10.5 * var(--d3)));
+  }
+  .s3-h-row {
+    margin-top: calc(18 * var(--d3)) !important;
+    height: calc(62 * var(--d3)) !important;
+  }
+  .s3-h-fa {
+    font-size: calc(50 * var(--d3)) !important;
+    color: var(--dk3-heading) !important;
+  }
+  .s3-h-latin {
+    font-size: calc(66.5 * var(--d3)) !important;
+    margin-inline-start: calc(16 * var(--d3)) !important;
+    transform: translateY(calc(-7.2 * var(--d3))) !important;
+    color: var(--dk3-red) !important;
+  }
+
+  /* ---------------- CTA (x986-1121, y429-475; no shadow in D3) ---------- */
+  .s3-dk-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left: calc(986 * var(--d3));
+    top: calc(429 * var(--d3));
+    width: calc(135 * var(--d3));
+    height: calc(46 * var(--d3));
+    border-radius: calc(12 * var(--d3));
+    background: var(--dk3-red);
+    color: #fff;
+    font-size: calc(17 * var(--d3));
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
+    transition:
+      background-color 150ms ease-out,
+      transform 150ms ease-out;
+  }
+  .s3-dk-cta:hover {
+    background: var(--brand-dark);
+    transform: translateY(calc(-1 * var(--d)));
+  }
+
+  /* ---------------- feature cards (boxes per features.ts .dk) ----------- */
+  .s3-card {
+    left: calc(var(--dkx) * var(--d3)) !important;
+    top: calc(var(--dky) * var(--d3)) !important;
+    width: calc(var(--dkw) * var(--d3)) !important;
+    height: calc(var(--dkh) * var(--d3)) !important;
+    border-radius: calc(12 * var(--d3)) !important;
+    background: var(--s3-card-bg) !important;
+    box-shadow: 0 6px 24px rgba(60, 80, 130, 0.07) !important;
+  }
+  .s3-dk-tile {
+    right: calc(var(--dk-tr) * var(--d3)) !important;
+    top: calc(var(--dk-tt) * var(--d3)) !important;
+    width: calc(var(--dk-tw) * var(--d3)) !important;
+    height: calc(var(--dk-th) * var(--d3)) !important;
+    border-radius: calc(12 * var(--d3)) !important;
+    background: var(--s3-icon-tile) !important;
+  }
+  .s3-dk-tile .m-only {
+    display: none !important;
+  }
+  .s3-dk-tile .s3-dk-icon {
+    display: block;
+  }
+  .s3-dk-tile > span {
+    width: calc(var(--dk-iw) * var(--d3)) !important;
+    height: calc(var(--dk-ih) * var(--d3)) !important;
+    color: var(--dk3-red);
+  }
+  /* mobile card text dies; the desktop block (below) takes over */
+  .s3-m-text {
+    display: none !important;
+  }
+  .s3-dk-title {
+    display: block;
+    position: absolute;
+    right: calc(var(--dk-tr2) * var(--d3));
+    top: calc((var(--dk-tcy) - var(--dk-tlh) / 2) * var(--d3));
+    margin: 0;
+    font-size: calc(var(--dk-tfs) * var(--d3));
+    line-height: calc(var(--dk-tlh) * var(--d3));
+    font-weight: 800;
+    color: var(--dk3-card-title);
+  }
+  .s3-dk-desc {
+    display: block;
+    position: absolute;
+    right: calc(var(--dk-dr) * var(--d3));
+    top: calc((var(--dk-dcy1) - var(--dk-dlh) / 2) * var(--d3));
+    margin: 0;
+    font-weight: 400;
+    color: var(--dk3-card-desc);
+  }
+  .s3-dk-desc span {
+    display: block;
+    white-space: nowrap;
+    font-size: calc(var(--dk-dfs1) * var(--d3));
+    line-height: calc(var(--dk-dlh) * var(--d3));
+  }
+  .s3-dk-desc span:nth-child(2) {
+    font-size: calc(var(--dk-dfs2) * var(--d3));
   }
 }
 /* ===================== END DESKTOP >=1280 ===================== */

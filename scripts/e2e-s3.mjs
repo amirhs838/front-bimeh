@@ -49,7 +49,10 @@ const browser = await chromium.launch();
   await page.evaluate(() => document.getElementById("scroll-3").scrollIntoView({ behavior: "instant", block: "start" }));
   await page.waitForTimeout(1200);
   const revealed = await page.evaluate(() => {
-    const els = document.querySelectorAll("#scroll-3 .s3-reveal, #scroll-3 .s3-fade");
+    // desktop-only parts (e.g. the >=1280 CTA) are display:none on mobile —
+    // the reveal observer ignores them (master prompt §Mobile Freeze 6), so
+    // only elements with a layout box participate in the visibility check.
+    const els = [...document.querySelectorAll("#scroll-3 .s3-reveal, #scroll-3 .s3-fade")].filter((e) => e.getClientRects().length > 0);
     return {
       count: els.length,
       allIn: [...els].every((e) => e.classList.contains("is-in")),

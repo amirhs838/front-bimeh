@@ -58,6 +58,33 @@ function Brain() {
   );
 }
 
+/** DESKTOP (D3) brain — D3 shows NO sparkles and a rounder, bolder blob
+ *  (ink 41x39, stroke ~3.4p). Mobile Brain stays untouched (m-only/dk-only
+ *  swap is CSS-gated inside the S3 desktop media query). */
+function BrainDk() {
+  return (
+    <svg viewBox="0 0 41 39" aria-hidden className={SVGcls} style={{ strokeWidth: 3.3 }}>
+      {/* left hemisphere */}
+      <path
+        {...S}
+        d="M19.6 6.1 C16.6 3.1 11 3.6 9.1 7.3 C5.2 6.3 1.9 9.7 2.9 13.4 C0.4 15.6 0.5 19.8 2.7 21.8 C1.7 25.5 4.4 29 8.2 28.9 C9.3 32.4 14.2 34.3 17.6 32.2 C18.3 32.7 19 33 19.6 33"
+      />
+      {/* right hemisphere */}
+      <path
+        {...S}
+        d="M21.4 6.1 C24.4 3.1 30 3.6 31.9 7.3 C35.8 6.3 39.1 9.7 38.1 13.4 C40.6 15.6 40.5 19.8 38.3 21.8 C39.3 25.5 36.6 29 32.8 28.9 C31.7 32.4 26.8 34.3 23.4 32.2 C22.7 32.7 22 33 21.4 33"
+      />
+      {/* central fissure */}
+      <path {...S} d="M20.5 4.6 C20.1 13.6 20.9 23.6 20.5 33.4" />
+      {/* sulci curls */}
+      <path {...S} d="M9.3 14.6 C11.3 15.6 11.3 18.2 9.3 19.2" />
+      <path {...S} d="M12.2 23.6 C14.2 24.1 15.2 25.7 14.7 27.8" />
+      <path {...S} d="M31.7 14.6 C29.7 15.6 29.7 18.2 31.7 19.2" />
+      <path {...S} d="M28.8 23.6 C26.8 24.1 25.8 25.7 26.3 27.8" />
+    </svg>
+  );
+}
+
 function Shield() {
   return (
     <svg viewBox="0 0 28 30" aria-hidden className={SVGcls}>
@@ -135,6 +162,20 @@ export const S3_ICON_SIZE: Record<S3IconName, { w: number; h: number }> = {
 export function S3FeatureIcon({ name }: { name: S3IconName }) {
   const Cmp = ICONS[name];
   const size = S3_ICON_SIZE[name];
+  // D3 redraws the brain only (§5.E) — CSS-gated m-only/dk-only swap, the
+  // desktop size comes from the tile's --dk-iw/--dk-ih vars (media query).
+  if (name === "brain") {
+    return (
+      <>
+        <span aria-hidden className="m-only block text-brand" style={{ width: px(size.w), height: px(size.h) }}>
+          <Brain />
+        </span>
+        <span aria-hidden className="dk-only s3-dk-icon block text-brand">
+          <BrainDk />
+        </span>
+      </>
+    );
+  }
   return (
     <span
       aria-hidden

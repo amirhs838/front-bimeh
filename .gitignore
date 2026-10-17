@@ -59,3 +59,4 @@ server.log
 /db/
 /.zscripts/
 mini-services/tool-results/
+tool-results/
